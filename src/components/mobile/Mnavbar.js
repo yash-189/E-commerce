@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import logo from '../../images/wakemakeup.png'
+import logo from '../../images/hh.png'
 import { useGlobalContext } from "../CartContext";
 import { useAuthContext } from "../AuthContext";
 
@@ -116,7 +116,7 @@ const Mnavbar = () => {
 
 
   return (
-    <header className="text-gray-600 body-font top-0  px-4 fixed bg-white z-20 w-full" >
+    <header className="text-gray-600 body-font top-0 py-2  px-4 fixed bg-white z-20 w-full" >
       <div className="container  mx-auto flex flex-wrap  flex-row md:flex-row justify-around">
         <motion.div
 
@@ -127,7 +127,7 @@ const Mnavbar = () => {
           transition={{ type: "spring", duration: 0.5 }}
         >
           <Link to={'/'}>
-            <img src={logo} className="   h-16  order-1"></img>
+            <img src={logo} className="   h-10  order-1"></img>
           </Link>
 
 
