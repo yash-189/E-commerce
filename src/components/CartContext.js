@@ -339,19 +339,6 @@ const Context = ({ children }) => {
         // search,name,category,brand 
     })
 
-    const searchApi = 'http://68.183.90.227:8080/product/search'
-    const TrendingApi = 'http://68.183.90.227:8080/product/new'
-    const menuApi = 'http://68.183.90.227:8080/product/menu'
-    const productApi = `http://68.183.90.227:8080/product/productid/${'id'}`
-    const CartApi = `http://68.183.90.227:8080/cart`
-    const AddCartApi = `http://68.183.90.227:8080/cart/add`
-    const removeCartApi = `http://68.183.90.227:8080/cart/remove`
-    const quantityApi = 'http://68.183.90.227:8080/cart/change/quantity'
-    const wishlistApi = `http://68.183.90.227:8080/cart`
-    const addwishlistApi = `http://68.183.90.227:8080/cart/add`
-    const removewishlistApi = `http://68.183.90.227:8080/cart/remove`
-    const homeApi = `http://68.183.90.227:8080/product/new`
-    const offers = `http://68.183.90.227:8080/product/offers`
 
 
 
