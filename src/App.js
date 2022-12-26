@@ -126,28 +126,7 @@ function App() {
       </Routes>
 
 
-      {/* <Routes>
-        <Route path="/m" element={<><Mnavbar />  <Homepage /> </>}></Route>
-        <Route path="/m/profile" element={<> <Mnavbar />< Profile />  <Nav /></>}></Route>
-        <Route path="/m/login" element={<> <Mnavbar /> <Nav />< Login /> </>}></Route>
-        <Route path="/m/explore" element={<> <Mnavbar /> <Nav />< Explore /> </>}></Route>
-        <Route path="/m/register" element={<> <Mnavbar /><Nav /> <Signup /> </>}></Route>
-
-        <Route path="/m/cart" element={<> <Mnavbar /><Cart /> </>}></Route>
-        <Route path="/m/wishlist" element={<ProtectedRoute><> <Mnavbar /><Wishlist /> </></ProtectedRoute>}></Route>
-        <Route path="/m/details" element={<> <Mnavbar /><Productpage /> </>}></Route>
-        <Route path="/m/payment" element={
-          <ProtectedRoute>< PaymentPage /></ProtectedRoute>}></Route>
-        <Route path="/m/contact" element={<> <Mnavbar /><Contact /> </>}></Route>
-        <Route path="/m/orders" element={<ProtectedRoute><Mnavbar /><Order /></ProtectedRoute>}></Route>
-        <Route path="/m/explore" element={<> <Mnavbar /><Explore /></>}></Route>
-        <Route path="/m/address" element={<><ProtectedRoute> <Mnavbar /><Address /></ProtectedRoute></>}></Route>
-        <Route path="/m/search" element={<><Mnavbar /> <SearchPage /></>}></Route>
-        <Route path="/m/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>}></Route>
-        <Route path="/m/offers" element={<><Mnavbar /><Moffer /></>}></Route>
-        <Route path="/m/success" element={<ProtectedRoute><Success /></ProtectedRoute>}></Route>
-
-      </Routes> */}
+     
 
     </>
   );
