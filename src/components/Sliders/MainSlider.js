@@ -63,7 +63,7 @@ console.log(decode);
                 transition={{ duration: 1, type: 'spring' }}
               >
                  <Link to={pathName.includes('/') ? ('/explore') : ('/explore')}>
-                  <Btn2 name='Explore' width={'sm:w-40 md:w-20 w-20'} height={'md:h-10 h-8'} />
+                  <Btn2 name='Explore' width={'sm:w-40 md:w-28 w-20'} height={'md:h-12 h-8'} />
 
                 </Link>
               </motion.div>

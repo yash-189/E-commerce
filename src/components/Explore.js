@@ -149,8 +149,8 @@ const Explore = () => {
                                         <hr className='' />
                                         <br />
                                         <div className=" flex flex-wrap sm:justify-center w-full justify-center ">
-                                            {isLoading && 
-                                            <div className='h-screen'>   <Loader /></div>
+                                            {isLoading &&
+                                                <div className='h-screen'>   <Loader /></div>
                                             }
                                             {!isLoading && filteredData?.map((elem) => {
                                                 return <ProductItem colpadding={'py-8 px-4'} css={"m-2"} title={elem.title}

@@ -110,7 +110,7 @@ const Api = "http://127.0.0.1:5001/auth-b22cc/us-central1/app/api/users/login";
                             </p>
                             <p className="leading-7 text-sm text-gray-600 mb-2  ml-1">
                                 Don't have an account?
-                                <Link to={pathName.includes('/') ? pathName : '/register'} onClick={() => pathName.includes('/') ? setshowSignup(true) : ''}><span style={{
+                                <Link to={pathName.includes('/') ? '/register' : '/register'} onClick={() => pathName.includes('/') ? setshowSignup(true) : ''}><span style={{
                                     fontSize: "16px",
                                     background: "-webkit-linear-gradient(#b388eb, #8093f1)",
                                     WebkitBackgroundClip: "text",

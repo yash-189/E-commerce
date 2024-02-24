@@ -110,7 +110,7 @@ const Footer = () => {
                             </a>
                         </span>
                         <div>
-                        <h1> Copyright © 2022-2023 <span>AstuteLook</span>. All Rights Reserved</h1>
+                        <h1> Copyright © 2022-2023 <span>y@sh</span>. All Rights Reserved</h1>
                     </div>
                     </div>
                 </div>

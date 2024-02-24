@@ -107,7 +107,7 @@ const Signup = ({ setshowSignup }) => {
                         <Btn name='Signup' width='100' isLoading={loading} />
                         <p className="leading-7 text-sm text-gray-600 mb-2 mt-2 ml-1">
                             Already have an account?
-                            <Link to={pathName.includes('/') ? '/' : '/login'} onClick={() => pathName.includes('/') ? setshowSignup(false) : ''}><span style={{
+                            <Link to={'/login'} onClick={() => pathName.includes('/') ? setshowSignup(false) : ''}><span style={{
                                 fontSize: "16px",
                                 background: "-webkit-linear-gradient(#b388eb, #8093f1)",
                                 webkitBackgroundClip: "text",

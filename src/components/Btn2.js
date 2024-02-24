@@ -18,7 +18,7 @@ const Btn2 = ({width,name,css,height, onClick,type}) => {
     return (
         <>
             {/* <a href={props.link}> */}
-            <button type={type} className={`${width} ${height} btn2 font-medium ${css}`} onClick={onClick} style={style}>{name}</button>
+            <button type={type} className={`${width} ${height} btn2 font-medium  ${css}`} onClick={onClick} style={style}>{name}</button>
             {/* </a> */}
         </>
     )

@@ -25,13 +25,13 @@ console.log(isLogged);
 
 const location = useLocation()
 
-    if (!isLogged) {
-        // user is not authenticated
+    // if (isLogged) {
+    //     // user is not authenticated
        
-            return <Navigate to="/login" state={{path: location.pathname}} />;
+    //         return <Navigate to="/login" state={{path: location.pathname}} />;
 
         
-    }
+    // }
 
 
 

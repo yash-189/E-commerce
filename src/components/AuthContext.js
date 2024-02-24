@@ -96,70 +96,7 @@ const AContext = ({ children }) => {
 
 
 
-    const gettoken = async () => {
-
-        if (token === null) {
-
-            console.log('null');
-
-            await axios.post('http://68.183.90.227:8080/')
-                .then((res) => {
-                    console.log(res);
-                    const token = res.data.token
-
-                    // const decodeToken = () => {
-                    //     // Define the string
-                    //     const encodedStringAtoB = token;
-
-                    //     const string = encodedStringAtoB?.split('.');
-                    //     const newString = string[1]
-                    //     console.log(string[1]);
-
-                    //     // Decode the String
-                    //     const decoded = atob(newString);
-                    //     setdecode(decode)
-
-                    //     console.log(decoded, "decodwe");
-                    //     return decoded
-                    // }
-
-                    // const checkAuth = decodeToken()
-
-                    // const parsedCheckAuth = JSON.parse(checkAuth)
-
-                    // console.log(parsedCheckAuth);
-                    // setdecode(parsedCheckAuth)
-
-
-
-
-                    localStorage.setItem('token', token);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        }
-
-
-
-        console.log(decode);
-
-    }
-
-
-
-
-
-
-
-
-    useEffect(() => {
-
-
-        gettoken()
-
-
-    }, [])
+    
 
 
     const token = localStorage.getItem("token");
