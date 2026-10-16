@@ -94,7 +94,7 @@ export default function Auth({ mode }) {
     `relative z-10 flex-1 rounded-full py-2 text-center text-sm font-medium transition-colors duration-300 ${active ? "text-violet-600" : "text-gray-500 hover:text-gray-900"}`;
 
   return (
-    <div className="mx-auto grid min-h-screen max-w-7xl gap-0 lg:grid-cols-2 lg:p-6">
+    <div className="mx-auto grid min-h-screen max-w-7xl gap-0 lg:h-screen lg:grid-cols-2 lg:p-6">
       <aside className="relative hidden overflow-hidden rounded-[2rem] bg-[#dfc7ff] p-12 lg:flex lg:flex-col">
         <span className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/30" aria-hidden="true" />
         <span className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#8093f1]/25" aria-hidden="true" />
@@ -117,14 +117,14 @@ export default function Auth({ mode }) {
         <img src={illustration} alt="" className="rise relative mx-auto mt-auto w-full max-w-sm pt-8" />
       </aside>
 
-      <div className="flex flex-col px-4 py-6 sm:px-8">
+      <div className="flex flex-col px-4 py-6 sm:px-8 lg:overflow-y-auto">
         <div className="flex items-center justify-between">
           <Link to="/" className="lg:invisible" aria-label="FakeShop home"><Logo /></Link>
           <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 transition hover:text-violet-600">
             <ArrowIcon width={15} height={15} className="rotate-180" /> Back to shop
           </Link>
         </div>
-        <div className="mx-auto my-auto w-full max-w-md py-10">
+        <div className="mx-auto w-full max-w-md py-10 lg:pt-[12vh]">
           <div className="relative mb-8 flex rounded-full bg-[#f3edfd] p-1" role="tablist" aria-label="Account">
             <span
               aria-hidden="true"
@@ -140,7 +140,7 @@ export default function Auth({ mode }) {
           </p>
 
           {!isRegister && (
-            <div className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-dashed border-violet-200 bg-[#faf8fe] px-4 py-3">
+            <div className="mt-6 flex h-[74px] items-center justify-between gap-3 rounded-2xl border border-dashed border-violet-200 bg-[#faf8fe] px-4 py-3">
               <div className="min-w-0 text-xs text-gray-600">
                 <p className="font-medium text-gray-900">Demo account</p>
                 <p className="truncate">{DEMO_ACCOUNT.email} · {DEMO_ACCOUNT.password}</p>
@@ -159,14 +159,14 @@ export default function Auth({ mode }) {
             </div>
           )}
 
-          <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
+          <form onSubmit={onSubmit} noValidate className={`space-y-3 ${isRegister ? "" : "mt-3"}`}>
             {formError && (
-              <p role="alert" className="rise rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+              <p role="alert" className="fixed inset-x-4 top-4 z-50 mx-auto max-w-md rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700 shadow-lg">
                 {formError}
               </p>
             )}
             {isRegister && (
-              <Field label="Full name" name="name" autoComplete="name" placeholder="Aarav Sharma" value={values.name} onChange={onChange} error={errors.name} />
+              <Field className="!mt-6 h-[74px]" label="Full name" name="name" autoComplete="name" placeholder="Aarav Sharma" value={values.name} onChange={onChange} error={errors.name} />
             )}
             <Field label="Email" name="email" type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" value={values.email} onChange={onChange} error={errors.email} />
 
@@ -193,25 +193,27 @@ export default function Auth({ mode }) {
                   <EyeIcon off={showPassword} width={18} height={18} />
                 </button>
               </div>
-              {capsLock && <p className="mt-1.5 text-xs text-amber-600">Caps Lock is on</p>}
-              {pw && (
-                <div className="mt-2 flex items-center gap-3" aria-live="polite">
+              {isRegister && (
+                <div className="mt-1 flex h-5 items-center gap-3" aria-live="polite">
                   <div className="flex flex-1 gap-1">
                     {[1, 2, 3].map((i) => (
-                      <span key={i} className={`h-1 flex-1 rounded-full transition-colors duration-300 ${i <= pw.level ? pw.color : "bg-gray-100"}`} />
+                      <span key={i} className={`h-1 flex-1 rounded-full transition-colors duration-300 ${pw && i <= pw.level ? pw.color : "bg-gray-100"}`} />
                     ))}
                   </div>
-                  <span className="w-12 text-right text-xs text-gray-500">{pw.label}</span>
+                  <span className="w-24 text-right text-xs text-gray-500">{capsLock ? <span className="text-amber-600">Caps Lock on</span> : pw?.label}</span>
                 </div>
               )}
               {!isRegister && (
+                <div className="mt-1 flex items-center justify-between">
                 <button
                   type="button"
                   onClick={() => notify("Password reset isn't available in this demo")}
-                  className="mt-2 text-xs font-medium text-violet-500 hover:text-violet-600"
+                  className="mt-1 text-xs font-medium text-violet-500 hover:text-violet-600"
                 >
                   Forgot password?
                 </button>
+                {capsLock && <span className="text-xs text-amber-600">Caps Lock on</span>}
+                </div>
               )}
             </div>
 

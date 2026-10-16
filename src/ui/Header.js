@@ -266,7 +266,7 @@ export default function Header() {
       </Container>
 
       {searchOpen && (
-        <div className="rise px-4 pb-3 md:hidden">
+        <div className="rise absolute inset-x-0 top-full border-b border-gray-100 bg-white px-4 py-3 shadow-sm md:hidden">
           <SearchBox autoFocus />
         </div>
       )}

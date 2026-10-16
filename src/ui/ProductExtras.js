@@ -114,7 +114,7 @@ export function Offers() {
             <button
               type="button"
               onClick={() => copy(o.code)}
-              className="shrink-0 rounded-lg bg-violet-50 px-2.5 py-1 text-xs font-semibold tracking-wider text-violet-600 transition hover:bg-violet-100"
+              className="w-24 shrink-0 rounded-lg bg-violet-50 py-1 text-center text-xs font-semibold tracking-wider text-violet-600 transition hover:bg-violet-100"
             >
               {copied === o.code ? "Copied" : o.code}
             </button>

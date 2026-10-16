@@ -8,7 +8,7 @@ export default function Field({ label, error, hint, id, className = "", ...input
       <input
         id={fieldId}
         aria-invalid={!!error}
-        aria-describedby={error ? `${fieldId}-error` : undefined}
+        aria-describedby={error || hint ? `${fieldId}-error` : undefined}
         className={`h-12 w-full rounded-xl border bg-gray-50/60 px-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:bg-white focus:ring-4 disabled:cursor-not-allowed disabled:text-gray-500 ${
           error
             ? "border-red-400 focus:border-red-500 focus:ring-red-100"
@@ -16,13 +16,9 @@ export default function Field({ label, error, hint, id, className = "", ...input
         }`}
         {...input}
       />
-      {error ? (
-        <p id={`${fieldId}-error`} className="mt-1.5 text-xs text-red-600">
-          {error}
-        </p>
-      ) : (
-        hint && <p className="mt-1.5 text-xs text-gray-500">{hint}</p>
-      )}
+      <p id={`${fieldId}-error`} className={`mt-1 min-h-[1rem] text-xs leading-4 ${error ? "text-red-600" : "text-gray-500"}`}>
+        {error || hint}
+      </p>
     </div>
   );
 }

@@ -132,7 +132,7 @@ export default function Product() {
                   </button>
                 ))}
               </div>
-              {sizeError && <p role="alert" className="rise mt-2 text-sm text-red-600">Choose a size first</p>}
+              <p role="alert" className="mt-2 min-h-[1.25rem] text-sm text-red-600">{sizeError ? "Choose a size first" : ""}</p>
             </fieldset>
           )}
 

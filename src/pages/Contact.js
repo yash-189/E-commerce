@@ -16,10 +16,9 @@ function validate(v) {
 }
 
 export default function Contact() {
-  const { user } = useStore();
+  const { user, notify } = useStore();
   const [values, setValues] = useState({ ...EMPTY, name: user?.name || "", email: user?.email || "" });
   const [errors, setErrors] = useState({});
-  const [sent, setSent] = useState(false);
 
   const onChange = (e) => {
     const next = { ...values, [e.target.name]: e.target.value };
@@ -32,7 +31,7 @@ export default function Contact() {
     const found = validate(values);
     setErrors(found);
     if (Object.keys(found).length) return;
-    setSent(true);
+    notify("Thanks, your message has been sent");
     setValues({ ...EMPTY, name: values.name, email: values.email });
   };
 
@@ -45,11 +44,6 @@ export default function Contact() {
           <h2 className="text-2xl font-medium text-gray-900">Get in touch</h2>
           <p className="mt-1 text-sm text-gray-500">Questions about an order, returns or anything else. We reply within a day.</p>
 
-          {sent && (
-            <p role="status" className="mt-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
-              Thanks, your message has been sent.
-            </p>
-          )}
 
           <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -64,10 +58,7 @@ export default function Contact() {
                 rows={5}
                 maxLength={1000}
                 value={values.message}
-                onChange={(e) => {
-                  setSent(false);
-                  onChange(e);
-                }}
+                onChange={onChange}
                 aria-invalid={!!errors.message}
                 className={`w-full rounded-lg border bg-white px-3 py-2.5 text-sm outline-none transition focus:ring-2 ${
                   errors.message ? "border-red-400 focus:ring-red-100" : "border-gray-300 focus:border-violet-500 focus:ring-violet-100"

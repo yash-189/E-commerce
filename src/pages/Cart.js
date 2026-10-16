@@ -33,11 +33,11 @@ export function OrderSummary({ children }) {
           <dd className="text-gray-900">{rupees(totals.total)}</dd>
         </div>
       </dl>
-      {left > 0 && totals.subtotal > 0 && (
+      {totals.subtotal > 0 && (
         <div className="mt-4 rounded-2xl bg-white px-3.5 py-3 text-xs text-violet-800">
-          Add {rupees(left)} more for free delivery.
+          {left > 0 ? `Add ${rupees(left)} more for free delivery.` : "You've unlocked free delivery."}
           <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-violet-100">
-            <div className="h-full rounded-full bg-brand transition-[width] duration-700 ease-out" style={{ width: `${(totals.subtotal / FREE_SHIPPING_FROM) * 100}%` }} />
+            <div className="h-full rounded-full bg-brand transition-[width] duration-700 ease-out" style={{ width: `${Math.min(100, (totals.subtotal / FREE_SHIPPING_FROM) * 100)}%` }} />
           </div>
         </div>
       )}
