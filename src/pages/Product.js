@@ -121,7 +121,7 @@ export default function Product() {
                     aria-pressed={size === s}
                     onClick={() => { setSize(s); setSizeError(false); }}
                     className={`h-11 w-14 rounded-full border text-sm font-medium transition active:scale-95 ${
-                      size === s ? "border-brand-ink bg-brand-ink text-white" : "border-gray-200 text-gray-800 hover:border-gray-900"
+                      size === s ? "border-violet-500 bg-violet-50 text-violet-700" : "border-gray-200 text-gray-800 hover:border-violet-300"
                     }`}
                   >
                     {s}
@@ -141,7 +141,7 @@ export default function Product() {
             <button type="button" onClick={() => add(false)} className="h-12 flex-1 rounded-full bg-brand font-medium text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 active:scale-[0.98]">
               Add to cart
             </button>
-            <button type="button" onClick={() => add(true)} className="h-12 flex-1 rounded-full bg-brand-ink font-medium text-white transition hover:bg-black active:scale-[0.98]">
+            <button type="button" onClick={() => add(true)} className="h-12 flex-1 rounded-full border border-violet-300 bg-white font-medium text-violet-600 transition hover:bg-violet-50 active:scale-[0.98]">
               Buy Now
             </button>
             <button
@@ -149,7 +149,7 @@ export default function Product() {
               onClick={() => toggleWishlist(product)}
               aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
               aria-pressed={saved}
-              className={`grid h-12 w-12 shrink-0 place-items-center rounded-full border transition ${saved ? "border-pink-200 bg-pink-50 text-pink-500" : "border-gray-200 text-gray-600 hover:border-gray-900 hover:text-gray-900"}`}
+              className={`grid h-12 w-12 shrink-0 place-items-center rounded-full border transition ${saved ? "border-pink-200 bg-pink-50 text-pink-500" : "border-gray-200 text-gray-600 hover:border-violet-300 hover:text-pink-500"}`}
             >
               <HeartIcon key={saved ? "on" : "off"} filled={saved} className={saved ? "pop" : ""} />
             </button>

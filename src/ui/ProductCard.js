@@ -13,7 +13,7 @@ export default function ProductCard({ product, index = 0 }) {
   const url = `/product/${product.id}`;
 
   const cartBtn = `inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-medium transition sm:px-4 ${
-    added ? "bg-brand text-white" : "bg-brand-ink text-white hover:bg-violet-600 active:scale-95"
+    added ? "bg-brand text-white" : "bg-violet-50 text-violet-600 hover:bg-brand hover:text-white active:scale-95"
   }`;
 
   return (

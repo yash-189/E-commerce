@@ -37,7 +37,7 @@ export default function Newsletter() {
             aria-describedby="newsletter-status"
             className="h-12 flex-1 rounded-xl border-0 bg-white px-4 text-sm text-gray-900 outline-none ring-2 ring-transparent focus:ring-white/60"
           />
-          <button type="submit" className="h-12 rounded-xl bg-brand-ink px-6 text-sm font-medium text-white transition hover:bg-black">
+          <button type="submit" className="h-12 rounded-xl bg-white px-6 text-sm font-medium text-violet-600 transition hover:bg-violet-50">
             Subscribe
           </button>
         </form>
