@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# FakeShop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An online store built with React and Tailwind CSS. Browse clothing, jewellery and electronics, save items to a wishlist, pick a size, and check out with a delivery address and payment method. Product data comes from the [Fake Store API](https://fakestoreapi.com).
 
-## Available Scripts
+![FakeShop on desktop and mobile](screenshots/hero.jpg)
 
-In the project directory, you can run:
+## Screens
 
-### `npm start`
+![Shop, product, checkout and order screens](screenshots/desktop.jpg)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![Mobile shop, product and cart screens](screenshots/mobile.jpg)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- Shop page with category, price filter, sort and search, all stored in the URL so results can be shared or bookmarked
+- Product page with size picker for clothing, quantity limits and related products
+- Cart that keeps each size as its own line, with save for later and a free delivery progress bar
+- Wishlist with move to cart
+- Sign up and sign in with inline validation; checkout and orders need an account
+- Checkout with Indian phone and pincode validation, saved address and a choice of payment method
+- Order confirmation and order history
+- Cart, wishlist and account saved in localStorage and synced across tabs
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Edge cases handled
 
-### `npm run build`
+- Loading skeletons, an error state with retry, and a 10 second request timeout
+- Product ids that don't exist, invalid ids and unknown categories show a 404 page
+- Empty cart, wishlist, orders and search results each have their own empty state
+- Opening checkout with an empty cart sends you back to the cart
+- Corrupted or old localStorage data is ignored instead of crashing the app
+- Broken product images fall back to a placeholder
+- The place order button can't be pressed twice
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Tech stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+React 18 · React Router 6 · Tailwind CSS · Context API · Fake Store API
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Project structure
 
-### `npm run eject`
+```
+src/
+├── pages/    # Home, Shop, Product, Cart, Wishlist, Auth, Checkout, Account
+├── ui/       # Header, Footer, ProductCard, form fields, icons, empty and error states
+├── store/    # cart, wishlist, account and orders state
+└── lib/      # API client, fetch hook, price formatting
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Run locally
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This is a frontend-only demo. Accounts and orders are saved in your browser, and no payment is taken.
