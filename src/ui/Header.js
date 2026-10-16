@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { CATEGORY_LABELS, categorySlug } from "../lib/format";
-import logo from "../assets/logo.png";
+import Logo from "./Logo";
 import {
   BagIcon, ChevronIcon, CloseIcon, FacebookIcon, HeartIcon, InstagramIcon,
   LinkedinIcon, MenuIcon, SearchIcon, TwitterIcon, UserIcon,
@@ -150,7 +150,7 @@ export default function Header() {
         </button>
 
         <Link to="/" className="shrink-0" aria-label="FakeShop home">
-          <img src={logo} alt="FakeShop" className="h-11 w-auto" />
+          <Logo />
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex" aria-label="Main">

@@ -1,3 +1,4 @@
+import Logo from "./Logo";
 import { Link } from "react-router-dom";
 import { Container } from "./States";
 import { SOCIALS } from "./Header";
@@ -13,7 +14,7 @@ export default function Footer() {
     <footer className="mt-20 bg-brand-ink text-gray-400">
       <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <p className="text-xl font-semibold text-white">FakeShop</p>
+          <Logo light />
           <p className="mt-3 max-w-xs text-sm leading-relaxed">
             Clothing, jewellery and electronics at everyday prices, with free delivery over ₹999.
           </p>
