@@ -36,7 +36,7 @@ export default function App() {
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
       <Header />
-      <main key={pathname} className="page-in flex-1">
+      <main key={pathname} className="page-in min-h-[100svh] flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
