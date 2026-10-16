@@ -59,7 +59,7 @@ export default function ProductCard({ product, index = 0 }) {
           )}
         </div>
         <Link to={url} className="mt-1.5 flex-1">
-          <h3 className="line-clamp-2 font-sans text-sm font-medium leading-snug tracking-normal text-gray-900 hover:text-violet-600">
+          <h3 className="line-clamp-2 text-sm font-medium leading-snug tracking-normal text-gray-900 hover:text-violet-600">
             {product.title}
           </h3>
         </Link>
