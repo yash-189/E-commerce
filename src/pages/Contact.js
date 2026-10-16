@@ -38,7 +38,7 @@ export default function Contact() {
 
   return (
     <>
-      <PageBanner title="Contact us" crumb="contact" />
+      <PageBanner title="Contact us" crumb="contact" sub="We usually reply within a day" />
       <Container className="grid items-center gap-12 py-12 lg:grid-cols-2">
         <img src={illustration} alt="" className="mx-auto hidden w-full max-w-sm lg:block" />
         <div className="mx-auto w-full max-w-lg">

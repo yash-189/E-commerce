@@ -11,7 +11,7 @@ export default function Wishlist() {
   if (wishlist.length === 0) {
     return (
       <>
-      <PageBanner title="Wishlist" />
+      <PageBanner title="Wishlist" sub={wishlist.length ? `${wishlist.length} saved ${wishlist.length === 1 ? "item" : "items"}` : "Save things you love for later"} />
       <Container>
         <EmptyState title="No saved items yet" body="Tap the heart on any product to save it for later." action="Browse products">
           <div className="grid h-16 w-16 place-items-center rounded-full bg-pink-50 text-pink-500">
@@ -25,7 +25,7 @@ export default function Wishlist() {
 
   return (
     <>
-    <PageBanner title="Wishlist" />
+    <PageBanner title="Wishlist" sub={wishlist.length ? `${wishlist.length} saved ${wishlist.length === 1 ? "item" : "items"}` : "Save things you love for later"} />
     <Container className="py-8 sm:py-10">
       <p className="mb-6 text-sm text-gray-500">{wishlist.length} saved {wishlist.length === 1 ? "item" : "items"}</p>
       <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">

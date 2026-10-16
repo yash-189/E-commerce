@@ -52,7 +52,7 @@ export default function Checkout() {
 
   return (
     <>
-    <PageBanner title="Checkout" />
+    <PageBanner title="Checkout" sub="Delivery address and payment, in one step" />
     <Container className="py-8 sm:py-10">
       <form onSubmit={onSubmit} noValidate className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-start">
         <div className="space-y-6">

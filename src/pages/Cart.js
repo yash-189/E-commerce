@@ -47,7 +47,7 @@ export function OrderSummary({ children }) {
 }
 
 export default function Cart() {
-  const { cart, setQty, removeFromCart, toggleWishlist, inWishlist, notify } = useStore();
+  const { cart, totals, setQty, removeFromCart, toggleWishlist, inWishlist, notify } = useStore();
   const { data } = useFetch((o) => getProducts(o));
   const inCartIds = new Set(cart.map((i) => i.id));
   const categories = new Set(cart.map((i) => i.category));
@@ -65,7 +65,7 @@ export default function Cart() {
   if (cart.length === 0) {
     return (
       <>
-        <PageBanner title="Shopping cart" crumb="cart" />
+        <PageBanner title="Shopping cart" crumb="cart" sub="Nothing here yet" />
         <Container>
           <EmptyState title="Your cart is empty!" body="Add something you like and it will show up here." action="Shop now">
             <img src={emptyCart} alt="" className="w-56" />
@@ -84,9 +84,8 @@ export default function Cart() {
 
   return (
     <>
-    <PageBanner title="Shopping cart" crumb="cart" />
+    <PageBanner title="Shopping cart" crumb="cart" sub={`${totals.count} ${totals.count === 1 ? "item" : "items"} · ${rupees(totals.total)}`} />
     <Container className="py-8 sm:py-10">
-      <h2 className="mb-6 text-2xl font-medium text-gray-900">Your Shopping Cart</h2>
       <div className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-start">
         <ul className="divide-y divide-gray-100">
           {cart.map((item) => (

@@ -1,3 +1,4 @@
+import { ChevronIcon } from "./Icons";
 import { Link } from "react-router-dom";
 
 export function EmptyState({ title, body, action, to = "/shop", children }) {
@@ -49,15 +50,20 @@ export function PageTitle({ children, sub }) {
   );
 }
 
-export function PageBanner({ title, crumb }) {
+export function PageBanner({ title, crumb, sub }) {
   return (
-    <div className="bg-brand-soft px-4 py-12 text-center text-white sm:py-20">
-      <h1 className="text-3xl font-medium sm:text-5xl">{title}</h1>
-      <nav aria-label="Breadcrumb" className="mt-3 text-sm text-white/90 sm:text-base">
-        <Link to="/" className="hover:text-white hover:underline">Home</Link>
-        <span className="mx-1.5">/</span>
-        <span>{crumb || title.toLowerCase()}</span>
-      </nav>
+    <div className="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+      <div className="relative overflow-hidden rounded-3xl bg-brand-soft px-6 py-8 text-white sm:px-10 sm:py-10">
+        <span className="absolute -right-10 -top-16 h-48 w-48 rounded-full bg-white/15" aria-hidden="true" />
+        <span className="absolute -bottom-20 right-24 h-40 w-40 rounded-full bg-white/10" aria-hidden="true" />
+        <nav aria-label="Breadcrumb" className="relative flex items-center gap-1.5 text-xs text-white/80 sm:text-sm">
+          <Link to="/" className="transition hover:text-white">Home</Link>
+          <ChevronIcon width={14} height={14} className="-rotate-90" />
+          <span aria-current="page" className="capitalize text-white">{crumb || title}</span>
+        </nav>
+        <h1 className="relative mt-2 text-3xl font-medium sm:text-4xl">{title}</h1>
+        {sub && <p className="relative mt-1.5 text-sm text-white/85">{sub}</p>}
+      </div>
     </div>
   );
 }

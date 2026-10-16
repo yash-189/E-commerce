@@ -60,21 +60,19 @@ export default function Shop() {
 
   return (
     <>
-    <PageBanner title={category ? categoryLabel(category) : "Explore"} crumb={category ? categoryLabel(category).toLowerCase() : "shop"} />
-    <Container className="py-8 sm:py-10">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h2 className="text-lg font-medium text-gray-900">{title}</h2>
-          <p className="mt-1 text-sm text-gray-500" aria-live="polite">
-            {loading ? "Loading products" : `${results.length} ${results.length === 1 ? "product" : "products"}`}
-          </p>
-        </div>
-        <div className="flex gap-2">
+    <PageBanner
+      title={title}
+      crumb={category ? categoryLabel(category) : "Shop"}
+      sub={<span aria-live="polite">{loading ? "Loading products" : `${results.length} ${results.length === 1 ? "product" : "products"}`}</span>}
+    />
+    <Container className="py-6 sm:py-8">
+      <div className="flex flex-col gap-4 lg:flex-row-reverse lg:items-center lg:justify-between">
+        <div className="flex w-full gap-2 sm:w-auto">
           <select
             value={band}
             onChange={(e) => update("price", e.target.value)}
             aria-label="Filter by price"
-            className="h-10 rounded-lg border border-gray-300 bg-white px-3 text-sm outline-none focus:border-violet-500"
+            className="h-10 min-w-0 flex-1 rounded-full border border-gray-200 bg-white px-4 text-sm outline-none transition hover:border-gray-300 focus:border-violet-400 focus:ring-4 focus:ring-violet-100 sm:flex-none"
           >
             {Object.entries(PRICE_BANDS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
@@ -82,14 +80,12 @@ export default function Shop() {
             value={sort}
             onChange={(e) => update("sort", e.target.value === "featured" ? "" : e.target.value)}
             aria-label="Sort products"
-            className="h-10 rounded-lg border border-gray-300 bg-white px-3 text-sm outline-none focus:border-violet-500"
+            className="h-10 min-w-0 flex-1 rounded-full border border-gray-200 bg-white px-4 text-sm outline-none transition hover:border-gray-300 focus:border-violet-400 focus:ring-4 focus:ring-violet-100 sm:flex-none"
           >
             {Object.entries(SORTS).map(([v, s]) => <option key={v} value={v}>{s.label}</option>)}
           </select>
         </div>
-      </div>
-
-      <div className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0 lg:pb-0">
         {[null, ...Object.keys(CATEGORY_LABELS)].map((c) => {
           const active = c === category;
           const search = params.toString();
@@ -105,6 +101,7 @@ export default function Shop() {
             </Link>
           );
         })}
+      </div>
       </div>
 
       <div className="mt-6">
