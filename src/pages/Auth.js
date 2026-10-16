@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import Field from "../ui/Field";
+import illustration from "../assets/vector.png";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -56,11 +57,14 @@ export default function Auth({ mode }) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md px-4 py-12 sm:py-16">
-      <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
-        {isRegister ? "Create your account" : "Sign in"}
+    <div className="relative overflow-hidden">
+      <div className="absolute inset-y-0 right-0 hidden w-[38%] bg-[#dfc7ff] lg:block" aria-hidden="true" />
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:py-16 lg:grid-cols-2">
+    <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-6 shadow-[0_10px_40px_-12px_rgba(128,147,241,0.35)] sm:p-8">
+      <h1 className="text-center text-2xl font-semibold text-gray-900">
+        {isRegister ? "Signup" : "Login"}
       </h1>
-      <p className="mt-1 text-sm text-gray-500">
+      <p className="mt-1 text-center text-sm text-gray-500">
         {isRegister ? "Save your address and see your orders in one place." : "Welcome back. Sign in to check out and track orders."}
       </p>
 
@@ -93,20 +97,23 @@ export default function Auth({ mode }) {
             {showPassword ? "Hide" : "Show"}
           </button>
         </div>
-        <button type="submit" className="h-12 w-full rounded-lg bg-indigo-500 font-medium text-white hover:bg-indigo-600">
+        <button type="submit" className="h-12 w-full rounded-xl bg-brand font-medium text-white shadow-lg shadow-violet-100 transition hover:opacity-90">
           {isRegister ? "Create account" : "Sign in"}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-gray-600">
-        {isRegister ? "Already have an account? " : "New to FakeShop? "}
-        <Link to={isRegister ? "/login" : "/register"} state={location.state} className="font-medium text-indigo-600 hover:text-indigo-700">
-          {isRegister ? "Sign in" : "Create an account"}
+        {isRegister ? "Already have an account? " : "Don't have an account? "}
+        <Link to={isRegister ? "/login" : "/register"} state={location.state} className="font-medium text-violet-500 hover:text-violet-600">
+          {isRegister ? "Login" : "Signup"}
         </Link>
       </p>
-      <p className="mt-8 text-center text-xs text-gray-400">
+      <p className="mt-6 text-center text-xs text-gray-400">
         Demo store: accounts are saved in this browser only.
       </p>
+    </div>
+        <img src={illustration} alt="" className="relative mx-auto hidden w-full max-w-md lg:block" />
+      </div>
     </div>
   );
 }

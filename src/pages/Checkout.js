@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { rupees, toInr } from "../lib/format";
-import { Container, PageTitle } from "../ui/States";
+import { Container, PageBanner } from "../ui/States";
 import Field from "../ui/Field";
 import Img from "../ui/Img";
 import { OrderSummary } from "./Cart";
@@ -73,8 +73,9 @@ export default function Checkout() {
   };
 
   return (
+    <>
+    <PageBanner title="Checkout" />
     <Container className="py-8 sm:py-10">
-      <PageTitle>Checkout</PageTitle>
       <form onSubmit={onSubmit} noValidate className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-start">
         <div className="space-y-6">
           <section className="rounded-xl border border-gray-200 bg-white p-5 sm:p-6">
@@ -97,7 +98,7 @@ export default function Checkout() {
                 <label
                   key={p.id}
                   className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 transition ${
-                    payment === p.id ? "border-indigo-500 bg-indigo-50" : "border-gray-200 hover:border-gray-300"
+                    payment === p.id ? "border-violet-500 bg-violet-50" : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
                   <input
@@ -106,7 +107,7 @@ export default function Checkout() {
                     value={p.id}
                     checked={payment === p.id}
                     onChange={() => setPayment(p.id)}
-                    className="h-4 w-4 accent-indigo-500"
+                    className="h-4 w-4 accent-violet-500"
                   />
                   <span>
                     <span className="block text-sm font-medium text-gray-900">{p.label}</span>
@@ -135,7 +136,7 @@ export default function Checkout() {
             <button
               type="submit"
               disabled={submitting}
-              className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-indigo-500 font-medium text-white hover:bg-indigo-600 disabled:cursor-wait disabled:bg-indigo-400"
+              className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-brand font-medium text-white hover:opacity-90 disabled:cursor-wait disabled:opacity-60"
             >
               {submitting && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />}
               {submitting ? "Placing order" : "Place order"}
@@ -144,5 +145,6 @@ export default function Checkout() {
         </div>
       </form>
     </Container>
+    </>
   );
 }

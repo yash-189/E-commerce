@@ -16,6 +16,23 @@
   }
 }
 
+.hero-in {
+  animation: hero-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.hero-in-2 {
+  animation-delay: 0.12s;
+}
+.hero-in-3 {
+  animation-delay: 0.24s;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+
 .toast-in {
   animation: toast-in 0.2s ease-out;
 }

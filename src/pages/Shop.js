@@ -4,7 +4,7 @@ import { getProducts } from "../lib/api";
 import { useFetch } from "../lib/useFetch";
 import { CATEGORY_LABELS, categoryFromSlug, categoryLabel, categorySlug, toInr } from "../lib/format";
 import { ProductGrid } from "../ui/ProductCard";
-import { Container, EmptyState, ErrorState } from "../ui/States";
+import { Container, EmptyState, ErrorState, PageBanner } from "../ui/States";
 import NotFound from "./NotFound";
 
 const SORTS = {
@@ -59,16 +59,12 @@ export default function Shop() {
   const hasFilters = q || band;
 
   return (
+    <>
+    <PageBanner title={category ? categoryLabel(category) : "Explore"} crumb={category ? categoryLabel(category).toLowerCase() : "shop"} />
     <Container className="py-8 sm:py-10">
-      <nav aria-label="Breadcrumb" className="text-sm text-gray-500">
-        <Link to="/" className="hover:text-gray-900">Home</Link>
-        <span className="mx-2">/</span>
-        <span className="text-gray-900">{category ? categoryLabel(category) : "Shop"}</span>
-      </nav>
-
-      <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl">{title}</h1>
+          <h2 className="text-lg font-medium text-gray-900">{title}</h2>
           <p className="mt-1 text-sm text-gray-500" aria-live="polite">
             {loading ? "Loading products" : `${results.length} ${results.length === 1 ? "product" : "products"}`}
           </p>
@@ -78,7 +74,7 @@ export default function Shop() {
             value={band}
             onChange={(e) => update("price", e.target.value)}
             aria-label="Filter by price"
-            className="h-10 rounded-lg border border-gray-300 bg-white px-3 text-sm outline-none focus:border-indigo-500"
+            className="h-10 rounded-lg border border-gray-300 bg-white px-3 text-sm outline-none focus:border-violet-500"
           >
             {Object.entries(PRICE_BANDS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
@@ -86,7 +82,7 @@ export default function Shop() {
             value={sort}
             onChange={(e) => update("sort", e.target.value === "featured" ? "" : e.target.value)}
             aria-label="Sort products"
-            className="h-10 rounded-lg border border-gray-300 bg-white px-3 text-sm outline-none focus:border-indigo-500"
+            className="h-10 rounded-lg border border-gray-300 bg-white px-3 text-sm outline-none focus:border-violet-500"
           >
             {Object.entries(SORTS).map(([v, s]) => <option key={v} value={v}>{s.label}</option>)}
           </select>
@@ -102,7 +98,7 @@ export default function Shop() {
               key={c || "all"}
               to={(c ? `/shop/${categorySlug(c)}` : "/shop") + (search ? `?${search}` : "")}
               className={`h-9 shrink-0 rounded-full border px-4 text-sm leading-9 transition ${
-                active ? "border-indigo-500 bg-indigo-50 font-medium text-indigo-700" : "border-gray-300 bg-white text-gray-700 hover:border-gray-400"
+                active ? "border-violet-500 bg-violet-50 font-medium text-violet-700" : "border-gray-300 bg-white text-gray-700 hover:border-gray-400"
               }`}
             >
               {c ? categoryLabel(c) : "All"}
@@ -136,5 +132,6 @@ export default function Shop() {
         )}
       </div>
     </Container>
+    </>
   );
 }

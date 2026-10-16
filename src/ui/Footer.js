@@ -1,49 +1,47 @@
 import { Link } from "react-router-dom";
-import { CATEGORY_LABELS, categorySlug } from "../lib/format";
 import { Container } from "./States";
+import { SOCIALS } from "./Header";
+
+const COLUMNS = [
+  { title: "Information", links: [["About us", "/contact"], ["FAQs", "/contact"], ["Contact us", "/contact"]] },
+  { title: "Account", links: [["My Account", "/account"], ["Order History", "/account"], ["Wishlist", "/wishlist"]] },
+  { title: "Services", links: [["Return Policy", "/contact"], ["Privacy Policy", "/contact"], ["Terms & Condition", "/contact"]] },
+];
 
 export default function Footer() {
   return (
-    <footer className="mt-20 bg-gray-800 text-gray-300">
-      <Container className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <footer className="mt-20 bg-brand-ink text-gray-400">
+      <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <p className="text-lg font-bold text-white">
-            Fake<span className="text-indigo-400">Shop</span>
-          </p>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-gray-400">
-            A demo store built with React and Tailwind. Products come from the Fake Store API, and
-            nothing you order here will ship.
+          <p className="text-xl font-semibold text-white">FakeShop</p>
+          <p className="mt-3 max-w-xs text-sm leading-relaxed">
+            Clothing, jewellery and electronics at everyday prices, with free delivery over ₹999.
           </p>
         </div>
-        <div>
-          <p className="text-sm font-semibold text-white">Shop</p>
-          <ul className="mt-3 space-y-2 text-sm">
-            {Object.keys(CATEGORY_LABELS).map((c) => (
-              <li key={c}>
-                <Link to={`/shop/${categorySlug(c)}`} className="hover:text-white">{CATEGORY_LABELS[c]}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-white">Account</p>
-          <ul className="mt-3 space-y-2 text-sm">
-            <li><Link to="/account" className="hover:text-white">Orders</Link></li>
-            <li><Link to="/wishlist" className="hover:text-white">Wishlist</Link></li>
-            <li><Link to="/cart" className="hover:text-white">Cart</Link></li>
-          </ul>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-white">Help</p>
-          <ul className="mt-3 space-y-2 text-sm text-gray-400">
-            <li>Free delivery over ₹999</li>
-            <li>7-day returns</li>
-            <li>Cash on delivery</li>
-          </ul>
-        </div>
+        {COLUMNS.map((col) => (
+          <div key={col.title}>
+            <p className="text-sm font-semibold text-white">{col.title}</p>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              {col.links.map(([label, to]) => (
+                <li key={label}>
+                  <Link to={to} className="transition hover:text-violet-300">{label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </Container>
-      <div className="border-t border-gray-700">
-        <Container className="py-5 text-xs text-gray-400">© {new Date().getFullYear()} FakeShop. Demo project.</Container>
+      <div className="border-t border-white/10">
+        <Container className="flex flex-col-reverse items-center justify-between gap-4 py-6 text-xs sm:flex-row">
+          <div className="flex items-center gap-5">
+            {SOCIALS.map(({ label, Icon }) => (
+              <span key={label} aria-label={label} className="transition hover:text-violet-300">
+                <Icon />
+              </span>
+            ))}
+          </div>
+          <p>Copyright © {new Date().getFullYear()} FakeShop. All Rights Reserved</p>
+        </Container>
       </div>
     </footer>
   );

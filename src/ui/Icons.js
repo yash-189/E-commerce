@@ -44,3 +44,23 @@ export const TrashIcon = (p) => (
 export const CheckIcon = (p) => (
   <svg {...base} {...p}><path d="m5 12 4.5 4.5L19 7" /></svg>
 );
+export const ChevronIcon = (p) => (
+  <svg {...base} {...p}><path d="m6 9 6 6 6-6" /></svg>
+);
+
+const brand = { width: 16, height: 16, viewBox: "0 0 24 24", fill: "currentColor", "aria-hidden": true };
+
+export const FacebookIcon = (p) => (
+  <svg {...brand} {...p}><path d="M14 8.5V6.8c0-.8.2-1.3 1.4-1.3H17V2.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v1.7H7.5V12h2.8v9.5H14V12h2.8l.4-3.5H14Z" /></svg>
+);
+export const TwitterIcon = (p) => (
+  <svg {...brand} {...p}><path d="M22 5.9c-.7.3-1.5.5-2.4.6.9-.5 1.5-1.3 1.8-2.3-.8.5-1.7.8-2.6 1a4.1 4.1 0 0 0-7 3.7A11.6 11.6 0 0 1 3.4 4.6a4.1 4.1 0 0 0 1.3 5.5c-.7 0-1.3-.2-1.9-.5 0 2 1.4 3.7 3.3 4.1-.6.2-1.2.2-1.9.1a4.1 4.1 0 0 0 3.8 2.8A8.2 8.2 0 0 1 2 18.3 11.6 11.6 0 0 0 8.3 20c7.5 0 11.7-6.2 11.7-11.7v-.5c.8-.6 1.5-1.3 2-2Z" /></svg>
+);
+export const InstagramIcon = (p) => (
+  <svg {...brand} fill="none" stroke="currentColor" strokeWidth="1.8" {...p}>
+    <rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+  </svg>
+);
+export const LinkedinIcon = (p) => (
+  <svg {...brand} {...p}><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3V9.5Zm6.5 0h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.1c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4V9.5Z" /></svg>
+);

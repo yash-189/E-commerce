@@ -12,6 +12,7 @@ import Wishlist from "./pages/Wishlist";
 import Auth from "./pages/Auth";
 import Checkout from "./pages/Checkout";
 import Account, { OrderDetail } from "./pages/Account";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 function RequireAuth({ children }) {
@@ -47,6 +48,7 @@ export default function App() {
           <Route path="/checkout" element={<RequireAuth><Checkout /></RequireAuth>} />
           <Route path="/account" element={<RequireAuth><Account /></RequireAuth>} />
           <Route path="/order/:id" element={<RequireAuth><OrderDetail /></RequireAuth>} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

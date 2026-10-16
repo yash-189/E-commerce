@@ -8,7 +8,7 @@ export default function NotFound({ what = "page" }) {
         body="The link may be broken, or it may have been removed."
         action="Go to the shop"
       >
-        <p className="text-5xl font-bold text-indigo-500">404</p>
+        <p className="text-5xl font-bold text-violet-500">404</p>
       </EmptyState>
     </Container>
   );

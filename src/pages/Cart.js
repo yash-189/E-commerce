@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { categoryLabel, rupees, toInr, FREE_SHIPPING_FROM } from "../lib/format";
-import { Container, EmptyState, PageTitle } from "../ui/States";
-import { BagIcon, TrashIcon } from "../ui/Icons";
+import { Container, EmptyState, PageBanner } from "../ui/States";
+import { ProductGrid } from "../ui/ProductCard";
+import { getProducts } from "../lib/api";
+import { useFetch } from "../lib/useFetch";
+import emptyCart from "../assets/emptycart.svg";
+import { TrashIcon } from "../ui/Icons";
 import Img from "../ui/Img";
 import QtyStepper from "../ui/QtyStepper";
 
@@ -30,10 +34,10 @@ export function OrderSummary({ children }) {
         </div>
       </dl>
       {left > 0 && totals.subtotal > 0 && (
-        <div className="mt-4 rounded-lg bg-indigo-50 px-3 py-2.5 text-xs text-indigo-800">
+        <div className="mt-4 rounded-lg bg-violet-50 px-3 py-2.5 text-xs text-violet-800">
           Add {rupees(left)} more for free delivery.
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-indigo-100">
-            <div className="h-full rounded-full bg-indigo-500" style={{ width: `${(totals.subtotal / FREE_SHIPPING_FROM) * 100}%` }} />
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-violet-100">
+            <div className="h-full rounded-full bg-violet-500" style={{ width: `${(totals.subtotal / FREE_SHIPPING_FROM) * 100}%` }} />
           </div>
         </div>
       )}
@@ -44,16 +48,31 @@ export function OrderSummary({ children }) {
 
 export default function Cart() {
   const { cart, setQty, removeFromCart, toggleWishlist, inWishlist, notify } = useStore();
+  const { data } = useFetch((o) => getProducts(o));
+  const inCartIds = new Set(cart.map((i) => i.id));
+  const categories = new Set(cart.map((i) => i.category));
+  const related = (data || [])
+    .filter((p) => !inCartIds.has(p.id) && (categories.size === 0 || categories.has(p.category)))
+    .slice(0, 4);
+
+  const relatedSection = related.length > 0 && (
+    <Container className="mt-16">
+      <h2 className="mb-6 text-lg font-medium text-gray-900">Related to items you viewed</h2>
+      <ProductGrid products={related} />
+    </Container>
+  );
 
   if (cart.length === 0) {
     return (
-      <Container>
-        <EmptyState title="Your cart is empty" body="Items you add will show up here." action="Browse products">
-          <div className="grid h-16 w-16 place-items-center rounded-full bg-indigo-50 text-indigo-500">
-            <BagIcon width={28} height={28} />
-          </div>
-        </EmptyState>
-      </Container>
+      <>
+        <PageBanner title="Shopping cart" crumb="cart" />
+        <Container>
+          <EmptyState title="Your cart is empty!" body="Add something you like and it will show up here." action="Shop now">
+            <img src={emptyCart} alt="" className="w-56" />
+          </EmptyState>
+        </Container>
+        {relatedSection}
+      </>
     );
   }
 
@@ -64,8 +83,10 @@ export default function Cart() {
   };
 
   return (
+    <>
+    <PageBanner title="Shopping cart" crumb="cart" />
     <Container className="py-8 sm:py-10">
-      <PageTitle>Cart</PageTitle>
+      <h2 className="mb-6 text-lg font-medium text-gray-900">Your Shopping Cart</h2>
       <div className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-start">
         <ul className="divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white">
           {cart.map((item) => (
@@ -77,7 +98,7 @@ export default function Cart() {
                 <div className="flex justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-xs text-gray-500">{categoryLabel(item.category)}</p>
-                    <Link to={`/product/${item.id}`} className="mt-0.5 line-clamp-2 text-sm font-medium text-gray-900 hover:text-indigo-600">
+                    <Link to={`/product/${item.id}`} className="mt-0.5 line-clamp-2 text-sm font-medium text-gray-900 hover:text-violet-600">
                       {item.title}
                     </Link>
                   </div>
@@ -109,7 +130,7 @@ export default function Cart() {
 
         <div className="lg:sticky lg:top-24">
           <OrderSummary>
-            <Link to="/checkout" className="mt-5 flex h-12 items-center justify-center rounded-lg bg-indigo-500 font-medium text-white hover:bg-indigo-600">
+            <Link to="/checkout" className="mt-5 flex h-12 items-center justify-center rounded-lg bg-brand font-medium text-white hover:opacity-90">
               Checkout
             </Link>
             <Link to="/shop" className="mt-3 block text-center text-sm text-gray-600 hover:text-gray-900">
@@ -119,5 +140,7 @@ export default function Cart() {
         </div>
       </div>
     </Container>
+    {relatedSection}
+    </>
   );
 }

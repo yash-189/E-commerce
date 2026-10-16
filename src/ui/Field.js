@@ -12,7 +12,7 @@ export default function Field({ label, error, hint, id, className = "", ...input
         className={`h-11 w-full rounded-lg border bg-white px-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:ring-2 ${
           error
             ? "border-red-400 focus:border-red-500 focus:ring-red-100"
-            : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-100"
+            : "border-gray-300 focus:border-violet-500 focus:ring-violet-100"
         }`}
         {...input}
       />

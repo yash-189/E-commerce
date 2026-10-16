@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { price } from "../lib/format";
-import { Container, EmptyState, PageTitle } from "../ui/States";
+import { Container, EmptyState, PageBanner } from "../ui/States";
 import { CloseIcon, HeartIcon } from "../ui/Icons";
 import Img from "../ui/Img";
 
@@ -10,6 +10,8 @@ export default function Wishlist() {
 
   if (wishlist.length === 0) {
     return (
+      <>
+      <PageBanner title="Wishlist" />
       <Container>
         <EmptyState title="No saved items yet" body="Tap the heart on any product to save it for later." action="Browse products">
           <div className="grid h-16 w-16 place-items-center rounded-full bg-pink-50 text-pink-500">
@@ -17,12 +19,15 @@ export default function Wishlist() {
           </div>
         </EmptyState>
       </Container>
+      </>
     );
   }
 
   return (
+    <>
+    <PageBanner title="Wishlist" />
     <Container className="py-8 sm:py-10">
-      <PageTitle sub={`${wishlist.length} saved ${wishlist.length === 1 ? "item" : "items"}`}>Wishlist</PageTitle>
+      <p className="mb-6 text-sm text-gray-500">{wishlist.length} saved {wishlist.length === 1 ? "item" : "items"}</p>
       <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
         {wishlist.map((item) => (
           <article key={item.id} className="relative flex flex-col rounded-xl border border-gray-200 bg-white p-3 sm:p-4">
@@ -42,7 +47,7 @@ export default function Wishlist() {
             <button
               type="button"
               onClick={() => moveToCart(item)}
-              className="mt-3 h-10 rounded-lg bg-indigo-500 text-sm font-medium text-white hover:bg-indigo-600"
+              className="mt-3 h-10 rounded-xl bg-brand text-sm font-medium text-white hover:opacity-90"
             >
               Move to cart
             </button>
@@ -50,5 +55,6 @@ export default function Wishlist() {
         ))}
       </div>
     </Container>
+    </>
   );
 }
