@@ -41,14 +41,29 @@ export default function Product() {
 
   if (loading) {
     return (
-      <Container className="grid gap-8 py-10 md:grid-cols-2" aria-busy="true">
-        <div className="aspect-square animate-pulse rounded-2xl bg-gray-100" />
-        <div className="space-y-4">
-          <div className="h-3 w-24 animate-pulse rounded bg-gray-100" />
-          <div className="h-7 w-4/5 animate-pulse rounded bg-gray-100" />
-          <div className="h-5 w-32 animate-pulse rounded bg-gray-100" />
-          <div className="h-24 animate-pulse rounded bg-gray-100" />
-          <div className="h-12 animate-pulse rounded-lg bg-gray-100" />
+      <Container className="py-8 sm:py-10" aria-busy="true">
+        <div className="h-4 w-64 max-w-full skeleton rounded" />
+        <div className="mt-6 grid gap-8 md:grid-cols-2 lg:gap-14">
+          <div className="aspect-square skeleton rounded-3xl" />
+          <div>
+            <div className="h-3 w-24 skeleton rounded" />
+            <div className="mt-4 h-8 w-full skeleton rounded" />
+            <div className="mt-2 h-8 w-3/5 skeleton rounded" />
+            <div className="mt-5 h-5 w-28 skeleton rounded" />
+            <div className="mt-8 h-9 w-48 skeleton rounded" />
+            <div className="mt-8 flex gap-2">
+              {[0, 1, 2, 3].map((i) => <div key={i} className="h-11 w-14 skeleton rounded-full" />)}
+            </div>
+            <div className="mt-8 flex gap-3">
+              <div className="h-12 flex-1 skeleton rounded-full" />
+              <div className="h-12 flex-1 skeleton rounded-full" />
+            </div>
+            <div className="mt-8 space-y-2">
+              <div className="h-3 w-full skeleton rounded" />
+              <div className="h-3 w-full skeleton rounded" />
+              <div className="h-3 w-2/3 skeleton rounded" />
+            </div>
+          </div>
         </div>
       </Container>
     );
@@ -69,7 +84,7 @@ export default function Product() {
   };
 
   return (
-    <Container className="py-8 sm:py-10">
+    <Container className="pb-28 pt-8 sm:py-10">
       <nav aria-label="Breadcrumb" className="truncate text-sm text-gray-500">
         <Link to="/" className="hover:text-gray-900">Home</Link>
         <span className="mx-2">/</span>
@@ -80,16 +95,16 @@ export default function Product() {
 
       <div className="mt-6 grid gap-8 md:grid-cols-2 lg:gap-14">
         <div className="md:sticky md:top-24 md:self-start">
-          <Img src={product.image} alt={product.title} className="aspect-square rounded-2xl border border-gray-200 p-10 sm:p-16" />
+          <Img src={product.image} alt={product.title} className="rise aspect-square rounded-3xl !bg-[#f7f4fd] p-10 sm:p-16" imgClassName="mix-blend-multiply transition duration-500 hover:scale-105" />
         </div>
 
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-violet-600">{categoryLabel(product.category)}</p>
-          <h1 className="mt-2 text-2xl font-semibold leading-snug text-gray-900 sm:text-3xl">{product.title}</h1>
+        <div className="rise [animation-delay:80ms]">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-violet-500">{categoryLabel(product.category)}</p>
+          <h1 className="mt-2 text-2xl font-medium leading-tight text-gray-900 sm:text-4xl">{product.title}</h1>
           <div className="mt-3"><Stars rating={product.rating} size="md" /></div>
 
           <div className="mt-6 flex items-baseline gap-3">
-            <p className="text-3xl font-bold text-gray-900">{price(product.price)}</p>
+            <p className="font-display text-3xl font-semibold text-gray-900">{price(product.price)}</p>
             <p className="text-gray-400 line-through">₹{mrp.toLocaleString("en-IN")}</p>
             <p className="text-sm font-semibold text-green-600">20% off</p>
           </div>
@@ -105,15 +120,15 @@ export default function Product() {
                     type="button"
                     aria-pressed={size === s}
                     onClick={() => { setSize(s); setSizeError(false); }}
-                    className={`h-11 w-14 rounded-lg border text-sm font-medium transition ${
-                      size === s ? "border-violet-500 bg-violet-50 text-violet-700" : "border-gray-300 text-gray-800 hover:border-gray-400"
+                    className={`h-11 w-14 rounded-full border text-sm font-medium transition active:scale-95 ${
+                      size === s ? "border-brand-ink bg-brand-ink text-white" : "border-gray-200 text-gray-800 hover:border-gray-900"
                     }`}
                   >
                     {s}
                   </button>
                 ))}
               </div>
-              {sizeError && <p role="alert" className="mt-2 text-sm text-red-600">Choose a size first</p>}
+              {sizeError && <p role="alert" className="rise mt-2 text-sm text-red-600">Choose a size first</p>}
             </fieldset>
           )}
 
@@ -122,11 +137,11 @@ export default function Product() {
             <QtyStepper value={qty} onChange={setQty} />
           </div>
 
-          <div className="mt-7 flex gap-3">
-            <button type="button" onClick={() => add(false)} className="h-12 flex-1 rounded-xl bg-brand font-medium text-white shadow-lg shadow-violet-100 hover:opacity-90">
+          <div className="fixed inset-x-0 bottom-0 z-30 flex gap-3 border-t border-gray-100 bg-white/95 p-3 backdrop-blur sm:static sm:mt-7 sm:border-0 sm:bg-transparent sm:p-0">
+            <button type="button" onClick={() => add(false)} className="h-12 flex-1 rounded-full bg-brand font-medium text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 active:scale-[0.98]">
               Add to cart
             </button>
-            <button type="button" onClick={() => add(true)} className="h-12 flex-1 rounded-xl bg-gray-100 font-medium text-gray-800 hover:bg-gray-200">
+            <button type="button" onClick={() => add(true)} className="h-12 flex-1 rounded-full bg-brand-ink font-medium text-white transition hover:bg-black active:scale-[0.98]">
               Buy Now
             </button>
             <button
@@ -134,13 +149,13 @@ export default function Product() {
               onClick={() => toggleWishlist(product)}
               aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
               aria-pressed={saved}
-              className={`grid h-12 w-12 shrink-0 place-items-center rounded-full border ${saved ? "border-pink-200 bg-pink-50 text-pink-500" : "border-gray-200 bg-gray-100 text-gray-600 hover:text-gray-900"}`}
+              className={`grid h-12 w-12 shrink-0 place-items-center rounded-full border transition ${saved ? "border-pink-200 bg-pink-50 text-pink-500" : "border-gray-200 text-gray-600 hover:border-gray-900 hover:text-gray-900"}`}
             >
-              <HeartIcon filled={saved} />
+              <HeartIcon key={saved ? "on" : "off"} filled={saved} className={saved ? "pop" : ""} />
             </button>
           </div>
 
-          <ul className="mt-8 divide-y divide-gray-100 rounded-xl border border-gray-200 text-sm">
+          <ul className="mt-8 divide-y divide-gray-100 rounded-2xl bg-[#faf8fe] text-sm">
             <li className="flex justify-between gap-4 px-4 py-3">
               <span className="text-gray-500">Delivery</span>
               <span className="text-right text-gray-900">
@@ -166,7 +181,7 @@ export default function Product() {
 
       {related.length > 0 && (
         <section className="mt-16">
-          <SectionTitle>Explore More</SectionTitle>
+          <SectionTitle eyebrow="You may also like">Explore More</SectionTitle>
           <ProductGrid products={related} />
         </section>
       )}

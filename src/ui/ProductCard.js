@@ -4,7 +4,7 @@ import { categoryLabel, price } from "../lib/format";
 import { BagIcon, CheckIcon, HeartIcon, StarIcon } from "./Icons";
 import Img from "./Img";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, index = 0 }) {
   const { addToCart, toggleWishlist, inWishlist, inCart } = useStore();
   const saved = inWishlist(product.id);
   const added = inCart(product.id);
@@ -13,12 +13,15 @@ export default function ProductCard({ product }) {
   const url = `/product/${product.id}`;
 
   const cartBtn = `inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-medium transition sm:px-4 ${
-    added ? "bg-brand text-white" : "bg-brand-ink text-white hover:bg-violet-600"
+    added ? "bg-brand text-white" : "bg-brand-ink text-white hover:bg-violet-600 active:scale-95"
   }`;
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-gray-100 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100">
-      <div className="relative bg-[#f7f4fd]">
+    <article
+      className="rise group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(128,147,241,0.45)]"
+      style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
+    >
+      <div className="relative overflow-hidden rounded-2xl bg-[#f7f4fd]">
         <Link to={url} tabIndex={-1} aria-hidden="true">
           <Img
             src={product.image}
@@ -37,15 +40,15 @@ export default function ProductCard({ product }) {
           onClick={() => toggleWishlist(product)}
           aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
           aria-pressed={saved}
-          className={`absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-white shadow-sm transition hover:scale-110 ${
-            saved ? "text-pink-500" : "text-gray-600 hover:text-pink-500"
+          className={`absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-white/90 shadow-sm backdrop-blur transition hover:scale-110 ${
+            saved ? "text-pink-500" : "text-gray-600 hover:text-pink-500 sm:translate-y-1 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
           }`}
         >
-          <HeartIcon filled={saved} width={17} height={17} />
+          <HeartIcon key={saved ? "on" : "off"} filled={saved} width={17} height={17} className={saved ? "pop" : ""} />
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col p-3 sm:p-4">
+      <div className="flex flex-1 flex-col px-1 pb-1 pt-3 sm:px-1.5 sm:pt-4">
         <div className="flex items-center justify-between gap-2 text-[11px]">
           <span className="font-medium uppercase tracking-wider text-violet-500">{categoryLabel(product.category)}</span>
           {product.rating && (
@@ -74,7 +77,7 @@ export default function ProductCard({ product }) {
               aria-label={added ? "Add one more to cart" : "Add to cart"}
               className={cartBtn}
             >
-              {added ? <CheckIcon width={15} height={15} /> : <BagIcon width={15} height={15} />}
+              {added ? <CheckIcon width={15} height={15} className="pop" /> : <BagIcon width={15} height={15} />}
               <span className="hidden sm:inline">{added ? "Added" : "Add"}</span>
             </button>
           )}
@@ -86,15 +89,15 @@ export default function ProductCard({ product }) {
 
 export function ProductCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-gray-100" aria-hidden="true">
-      <div className="aspect-[4/5] animate-pulse bg-[#f7f4fd]" />
-      <div className="p-4">
-        <div className="h-2.5 w-16 animate-pulse rounded bg-gray-100" />
-        <div className="mt-3 h-3 w-full animate-pulse rounded bg-gray-100" />
-        <div className="mt-2 h-3 w-2/3 animate-pulse rounded bg-gray-100" />
+    <div aria-hidden="true">
+      <div className="aspect-[4/5] skeleton rounded-2xl" />
+      <div className="px-1 pt-4">
+        <div className="h-2.5 w-16 skeleton rounded" />
+        <div className="mt-3 h-3 w-full skeleton rounded" />
+        <div className="mt-2 h-3 w-2/3 skeleton rounded" />
         <div className="mt-4 flex justify-between">
-          <div className="h-5 w-16 animate-pulse rounded bg-gray-100" />
-          <div className="h-9 w-16 animate-pulse rounded-full bg-gray-100" />
+          <div className="h-5 w-16 skeleton rounded" />
+          <div className="h-9 w-16 skeleton rounded-full" />
         </div>
       </div>
     </div>
@@ -103,10 +106,10 @@ export function ProductCardSkeleton() {
 
 export function ProductGrid({ products, loading, count = 8 }) {
   return (
-    <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-6 sm:gap-y-10 md:grid-cols-3 lg:grid-cols-4">
       {loading
         ? Array.from({ length: count }, (_, i) => <ProductCardSkeleton key={i} />)
-        : products.map((p) => <ProductCard key={p.id} product={p} />)}
+        : products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
     </div>
   );
 }

@@ -22,7 +22,7 @@
 }
 
 .hero-in {
-  animation: hero-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: hero-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
 }
 .hero-in-2 {
   animation-delay: 0.12s;
@@ -35,6 +35,59 @@
   from {
     opacity: 0;
     transform: translateX(-24px);
+  }
+}
+
+.page-in {
+  animation: page-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.rise {
+  animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f1edf9 0%, #faf8fe 50%, #f1edf9 100%) 0 0 / 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.pop {
+  animation: pop 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+@keyframes pop {
+  50% {
+    transform: scale(1.12);
   }
 }
 
@@ -55,5 +108,9 @@
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

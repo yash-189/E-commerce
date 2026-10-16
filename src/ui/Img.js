@@ -5,7 +5,7 @@ export default function Img({ src, alt, className = "", imgClassName = "" }) {
 
   return (
     <div className={`relative flex items-center justify-center overflow-hidden bg-white ${className}`}>
-      {state === "loading" && <div className="absolute inset-3 animate-pulse rounded-lg bg-gray-100" />}
+      {state === "loading" && <div className="absolute inset-3 skeleton rounded-lg" />}
       {state === "error" ? (
         <span className="text-xs text-gray-400">Image unavailable</span>
       ) : (

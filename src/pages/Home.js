@@ -7,6 +7,7 @@ import { ArrowIcon, CashIcon, ReturnIcon, ShieldIcon, TruckIcon } from "../ui/Ic
 import { CATEGORY_LABELS, categorySlug } from "../lib/format";
 import Img from "../ui/Img";
 import Newsletter from "../ui/Newsletter";
+import Reveal from "../ui/Reveal";
 import hero from "../assets/BG.png";
 import summer from "../assets/banner.webp";
 import nike from "../assets/image5.jpg";
@@ -51,7 +52,7 @@ function Categories({ products, loading }) {
           return (
             <Link key={c} to={`/shop/${categorySlug(c)}`} className="group rounded-2xl bg-[#f7f4fd] p-4 transition hover:bg-[#efe7fc] sm:p-5">
               {loading || !sample ? (
-                <div className="aspect-square animate-pulse rounded-xl bg-white/70" />
+                <div className="aspect-square skeleton rounded-xl" />
               ) : (
                 <Img src={sample.image} alt="" className="aspect-square !bg-transparent p-4 mix-blend-multiply" imgClassName="transition duration-500 group-hover:scale-105" />
               )}
@@ -115,7 +116,7 @@ export default function Home() {
         {error ? <ErrorState onRetry={retry} /> : <ProductGrid products={clothing} loading={loading} />}
       </Container>
 
-      <Container className="mt-20">
+      <Reveal className="mx-auto mt-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-4 sm:grid-cols-2">
           <Banner to="/shop/women" src={summer} alt="Summer Fashion Days: up to 50% off plus 10% cashback" className="aspect-square sm:aspect-auto" />
           <div className="grid gap-4">
@@ -123,9 +124,9 @@ export default function Home() {
             <Banner to="/shop/men" src={tshirt} alt="New t-shirts" className="aspect-[471/280]" />
           </div>
         </div>
-      </Container>
+      </Reveal>
 
-      <Container className="mt-20">
+      <Reveal className="mx-auto mt-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-8 sm:grid-cols-2 sm:gap-16">
           <Banner to="/shop/jewelery" src={beauty} alt="Beauty store" className="aspect-[4/3]" />
           <div>
@@ -139,7 +140,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </Container>
+      </Reveal>
 
       <Container className="mt-20">
         <SectionTitle eyebrow="Top picks">Explore More</SectionTitle>
