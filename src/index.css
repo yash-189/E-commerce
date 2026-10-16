@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Noto+Sans:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -11,8 +11,13 @@
   body {
     @apply bg-white font-sans text-gray-900 antialiased;
   }
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
   :focus-visible {
-    @apply outline-none ring-2 ring-indigo-500 ring-offset-2;
+    @apply outline-none ring-2 ring-violet-500 ring-offset-2;
   }
 }
 

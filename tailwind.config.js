@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['"Noto Sans"', "system-ui", "sans-serif"],
+        display: ["Jost", '"Noto Sans"', "sans-serif"],
       },
       colors: {
         brand: {

@@ -52,7 +52,7 @@ export function PageTitle({ children, sub }) {
 export function PageBanner({ title, crumb }) {
   return (
     <div className="bg-brand-soft px-4 py-12 text-center text-white sm:py-20">
-      <h1 className="text-3xl font-normal sm:text-5xl">{title}</h1>
+      <h1 className="text-3xl font-medium sm:text-5xl">{title}</h1>
       <nav aria-label="Breadcrumb" className="mt-3 text-sm text-white/90 sm:text-base">
         <Link to="/" className="hover:text-white hover:underline">Home</Link>
         <span className="mx-1.5">/</span>
@@ -62,10 +62,11 @@ export function PageBanner({ title, crumb }) {
   );
 }
 
-export function SectionTitle({ children }) {
+export function SectionTitle({ children, eyebrow }) {
   return (
     <div className="mb-8 text-center">
-      <h2 className="text-2xl font-normal text-gray-900 sm:text-3xl">{children}</h2>
+      {eyebrow && <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-violet-500">{eyebrow}</p>}
+      <h2 className="text-2xl font-medium text-gray-900 sm:text-4xl">{children}</h2>
       <span className="mx-auto mt-3 block h-1 w-14 rounded-full bg-brand" />
     </div>
   );
