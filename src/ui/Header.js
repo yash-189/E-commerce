@@ -25,7 +25,7 @@ function Count({ n }) {
   );
 }
 
-function SearchBox({ className = "" }) {
+function SearchBox({ className = "", autoFocus = false }) {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [q, setQ] = useState(params.get("q") || "");
@@ -49,6 +49,7 @@ function SearchBox({ className = "" }) {
         placeholder="Search here"
         aria-label="Search products"
         maxLength={80}
+        autoFocus={autoFocus}
         className="h-10 w-full rounded-full border border-transparent bg-gray-100 pl-4 pr-11 text-sm outline-none transition focus:border-violet-300 focus:bg-white focus:ring-2 focus:ring-violet-100"
       />
       <button type="submit" aria-label="Search" className="absolute right-1 top-1 grid h-8 w-8 place-items-center rounded-full text-gray-500 hover:text-violet-600">
@@ -114,10 +115,12 @@ const navClass = ({ isActive }) => `text-sm transition ${isActive ? "text-violet
 export default function Header() {
   const { totals, wishlist, user } = useStore();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     setMenuOpen(false);
+    setSearchOpen(false);
   }, [location.pathname, location.search]);
 
   useEffect(() => {
@@ -130,8 +133,8 @@ export default function Header() {
   const iconLink = "relative grid h-10 w-10 place-items-center rounded-full text-gray-700 transition hover:bg-violet-50 hover:text-violet-600";
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 shadow-sm backdrop-blur">
-      <div className="hidden border-b border-gray-100 sm:block">
+    <>
+      <div className="hidden border-b border-gray-100 bg-white sm:block">
         <Container className="flex h-8 items-center justify-between text-xs text-gray-500">
           <div className="flex items-center gap-4">
             {SOCIALS.map(({ label, Icon }) => (
@@ -143,6 +146,8 @@ export default function Header() {
           <p>Free delivery on orders over ₹999</p>
         </Container>
       </div>
+
+    <header className="sticky top-0 z-40 bg-white/90 shadow-sm backdrop-blur">
 
       <Container className="flex h-16 items-center gap-6">
         <button type="button" className="-ml-2 grid h-10 w-10 place-items-center text-gray-700 md:hidden" onClick={() => setMenuOpen(true)} aria-label="Open menu">
@@ -162,6 +167,15 @@ export default function Header() {
         <SearchBox className="ml-auto hidden w-full max-w-sm md:block" />
 
         <div className="ml-auto flex items-center md:ml-0">
+          <button
+            type="button"
+            onClick={() => setSearchOpen((o) => !o)}
+            aria-label={searchOpen ? "Close search" : "Search"}
+            aria-expanded={searchOpen}
+            className={`${iconLink} md:hidden`}
+          >
+            {searchOpen ? <CloseIcon /> : <SearchIcon />}
+          </button>
           <Link to="/wishlist" className={`${iconLink} hidden sm:grid`} aria-label={`Wishlist, ${wishlist.length} items`}>
             <HeartIcon />
             <Count n={wishlist.length} />
@@ -182,9 +196,11 @@ export default function Header() {
         </div>
       </Container>
 
-      <div className="px-4 pb-3 md:hidden">
-        <SearchBox />
-      </div>
+      {searchOpen && (
+        <div className="rise px-4 pb-3 md:hidden">
+          <SearchBox autoFocus />
+        </div>
+      )}
 
       {menuOpen && (
         <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true" aria-label="Menu">
@@ -212,5 +228,6 @@ export default function Header() {
         </div>
       )}
     </header>
+    </>
   );
 }

@@ -7,10 +7,10 @@ import { useStore } from "../store/StoreContext";
 import { ProductGrid } from "../ui/ProductCard";
 import { Container, ErrorState, SectionTitle } from "../ui/States";
 import { HeartIcon } from "../ui/Icons";
-import Img from "../ui/Img";
 import Stars from "../ui/Stars";
 import QtyStepper from "../ui/QtyStepper";
 import NotFound from "./NotFound";
+import { DeliveryCheck, DetailTabs, Offers, ShareButton, ZoomImage, useRecentlyViewed } from "../ui/ProductExtras";
 
 const CLOTHING_SIZES = ["S", "M", "L", "XL"];
 
@@ -28,6 +28,7 @@ export default function Product() {
     [id],
   );
   const { data: all } = useFetch((o) => getProducts(o));
+  const recent = useRecentlyViewed(product);
 
   if (!validId || (!loading && !error && !product)) return <NotFound what="product" />;
 
@@ -95,13 +96,16 @@ export default function Product() {
 
       <div className="mt-6 grid gap-8 md:grid-cols-2 lg:gap-14">
         <div className="md:sticky md:top-24 md:self-start">
-          <Img src={product.image} alt={product.title} className="rise aspect-square rounded-3xl !bg-[#f7f4fd] p-10 sm:p-16" imgClassName="mix-blend-multiply transition duration-500 hover:scale-105" />
+          <ZoomImage src={product.image} alt={product.title} />
         </div>
 
         <div className="rise [animation-delay:80ms]">
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-violet-500">{categoryLabel(product.category)}</p>
           <h1 className="mt-2 text-2xl font-medium leading-tight text-gray-900 sm:text-4xl">{product.title}</h1>
-          <div className="mt-3"><Stars rating={product.rating} size="md" /></div>
+          <div className="mt-3 flex items-center justify-between gap-3">
+            <Stars rating={product.rating} size="md" />
+            <ShareButton title={product.title} />
+          </div>
 
           <div className="mt-6 flex items-baseline gap-3">
             <p className="font-display text-3xl font-semibold text-gray-900">{price(product.price)}</p>
@@ -172,17 +176,24 @@ export default function Product() {
             </li>
           </ul>
 
-          <div className="mt-8">
-            <h2 className="text-sm font-semibold text-gray-900">About this item</h2>
-            <p className="mt-2 text-sm leading-relaxed text-gray-600">{product.description}</p>
-          </div>
+          <Offers />
+          <DeliveryCheck free={toInr(product.price) * qty >= FREE_SHIPPING_FROM} />
         </div>
       </div>
+
+      <DetailTabs product={product} />
 
       {related.length > 0 && (
         <section className="mt-16">
           <SectionTitle eyebrow="You may also like">Explore More</SectionTitle>
           <ProductGrid products={related} />
+        </section>
+      )}
+
+      {recent.length > 0 && (
+        <section className="mt-16">
+          <SectionTitle eyebrow="Your history">Recently viewed</SectionTitle>
+          <ProductGrid products={recent.slice(0, 4)} />
         </section>
       )}
     </Container>

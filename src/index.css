@@ -91,6 +91,11 @@
   }
 }
 
+.is-zooming img {
+  transform: scale(1.8);
+  transform-origin: var(--zoom-origin);
+}
+
 .toast-in {
   animation: toast-in 0.2s ease-out;
 }

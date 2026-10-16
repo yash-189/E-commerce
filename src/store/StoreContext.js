@@ -1,8 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+
 import { toInr, FREE_SHIPPING_FROM, SHIPPING_FEE } from "../lib/format";
 
 const StoreContext = createContext(null);
 export const MAX_QTY = 10;
+export const DEMO_ACCOUNT = { name: "Demo Shopper", email: "demo@fakeshop.in", password: "demo1234" };
 
 function load(key, fallback) {
   try {
@@ -104,7 +106,7 @@ export function StoreProvider({ children }) {
   const register = useCallback(
     ({ name, email, password }) => {
       const key = email.trim().toLowerCase();
-      if (users.some((u) => u.email === key)) {
+      if (key === DEMO_ACCOUNT.email || users.some((u) => u.email === key)) {
         throw new Error("An account with this email already exists");
       }
       const account = { name: name.trim(), email: key, password };
@@ -117,7 +119,7 @@ export function StoreProvider({ children }) {
   const login = useCallback(
     ({ email, password }) => {
       const key = email.trim().toLowerCase();
-      const account = users.find((u) => u.email === key);
+      const account = [DEMO_ACCOUNT, ...users].find((u) => u.email === key);
       if (!account || account.password !== password) {
         throw new Error("Email or password is incorrect");
       }

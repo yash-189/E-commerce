@@ -14,7 +14,7 @@ export default function Newsletter() {
   };
 
   return (
-    <Reveal className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <Reveal className="mx-auto mt-24 mb-4 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="relative overflow-hidden rounded-3xl bg-brand-soft px-6 py-12 text-center text-white sm:px-12 sm:py-16">
         <span className="absolute -left-16 -top-16 h-48 w-48 rounded-full bg-white/10" aria-hidden="true" />
         <span className="absolute -bottom-20 -right-10 h-56 w-56 rounded-full bg-white/10" aria-hidden="true" />
