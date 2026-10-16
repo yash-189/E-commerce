@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { DEMO_ACCOUNT, useStore } from "../store/StoreContext";
 import Field from "../ui/Field";
 import Logo from "../ui/Logo";
-import { CheckIcon, EyeIcon } from "../ui/Icons";
+import { ArrowIcon, CheckIcon, EyeIcon } from "../ui/Icons";
 import illustration from "../assets/vector.png";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -49,6 +49,13 @@ export default function Auth({ mode }) {
   const [touched, setTouched] = useState(false);
   const [busy, setBusy] = useState(false);
 
+  useEffect(() => {
+    setErrors({});
+    setFormError("");
+    setTouched(false);
+    setCapsLock(false);
+  }, [mode]);
+
   if (user) return <Navigate to={from} replace />;
 
   const isRegister = mode === "register";
@@ -84,10 +91,10 @@ export default function Auth({ mode }) {
   };
 
   const tab = (active) =>
-    `flex-1 rounded-full py-2 text-center text-sm font-medium transition ${active ? "bg-white text-violet-600 shadow-sm" : "text-gray-500 hover:text-gray-900"}`;
+    `relative z-10 flex-1 rounded-full py-2 text-center text-sm font-medium transition-colors duration-300 ${active ? "text-violet-600" : "text-gray-500 hover:text-gray-900"}`;
 
   return (
-    <div className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl gap-0 lg:grid-cols-2 lg:p-6">
+    <div className="mx-auto grid min-h-screen max-w-7xl gap-0 lg:grid-cols-2 lg:p-6">
       <aside className="relative hidden overflow-hidden rounded-[2rem] bg-[#dfc7ff] p-12 lg:flex lg:flex-col">
         <span className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/30" aria-hidden="true" />
         <span className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#8093f1]/25" aria-hidden="true" />
@@ -110,9 +117,19 @@ export default function Auth({ mode }) {
         <img src={illustration} alt="" className="rise relative mx-auto mt-auto w-full max-w-sm pt-8" />
       </aside>
 
-      <div className="flex items-center justify-center px-4 py-10 sm:py-16">
-        <div key={mode} className="rise w-full max-w-md">
-          <div className="mb-8 flex rounded-full bg-[#f3edfd] p-1" role="tablist" aria-label="Account">
+      <div className="flex flex-col px-4 py-6 sm:px-8">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="lg:invisible" aria-label="FakeShop home"><Logo /></Link>
+          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 transition hover:text-violet-600">
+            <ArrowIcon width={15} height={15} className="rotate-180" /> Back to shop
+          </Link>
+        </div>
+        <div className="mx-auto my-auto w-full max-w-md py-10">
+          <div className="relative mb-8 flex rounded-full bg-[#f3edfd] p-1" role="tablist" aria-label="Account">
+            <span
+              aria-hidden="true"
+              className={`absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full bg-white shadow-sm transition-transform duration-300 ease-out ${isRegister ? "translate-x-full" : ""}`}
+            />
             <Link to="/login" state={location.state} role="tab" aria-selected={!isRegister} className={tab(!isRegister)}>Login</Link>
             <Link to="/register" state={location.state} role="tab" aria-selected={isRegister} className={tab(isRegister)}>Signup</Link>
           </div>

@@ -32,11 +32,12 @@ function ScrollToTop() {
 
 export default function App() {
   const { pathname } = useLocation();
+  const isAuth = pathname === "/login" || pathname === "/register";
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
-      <Header />
-      <main key={pathname} className="page-in min-h-[100svh] flex-1">
+      {!isAuth && <Header />}
+      <main key={isAuth ? "auth" : pathname} className={`page-in flex-1 ${isAuth ? "" : "min-h-[100svh]"}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
@@ -53,7 +54,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <Footer />
+      {!isAuth && <Footer />}
       <Toast />
     </div>
   );
