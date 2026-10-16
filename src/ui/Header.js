@@ -110,6 +110,78 @@ function CategoryMenu() {
   );
 }
 
+function UserMenu() {
+  const { user, logout } = useStore();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDown = (e) => {
+      if (!ref.current?.contains(e.target)) setOpen(false);
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  if (!user) {
+    return (
+      <Link to="/login" className="ml-1 hidden h-9 items-center rounded-full bg-brand px-4 text-sm font-medium text-white transition hover:-translate-y-0.5 sm:inline-flex">
+        Login
+      </Link>
+    );
+  }
+
+  const item = "flex w-full items-center rounded-lg px-3 py-2 text-left text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600";
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-haspopup="true"
+        aria-label="Account menu"
+        className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-violet-50"
+      >
+        <span className="grid h-8 w-8 place-items-center rounded-full bg-brand text-xs font-semibold text-white">
+          {user.name.charAt(0).toUpperCase()}
+        </span>
+      </button>
+      {open && (
+        <div className="rise absolute right-0 top-full z-50 mt-2 w-60 rounded-2xl border border-gray-100 bg-white p-2 shadow-xl shadow-violet-100">
+          <div className="border-b border-gray-100 px-3 pb-3 pt-2">
+            <p className="truncate text-sm font-medium text-gray-900">{user.name}</p>
+            <p className="truncate text-xs text-gray-500">{user.email}</p>
+          </div>
+          <div className="py-1">
+            <Link to="/account" className={item}>My account</Link>
+            <Link to="/account?tab=orders" className={item}>Orders</Link>
+            <Link to="/wishlist" className={item}>Wishlist</Link>
+            <Link to="/account?tab=addresses" className={item}>Address</Link>
+            <Link to="/account?tab=settings" className={item}>Settings</Link>
+          </div>
+          <div className="border-t border-gray-100 pt-1">
+            <button type="button" onClick={logout} className={`${item} hover:!bg-red-50 hover:!text-red-600`}>Sign out</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const navClass = ({ isActive }) => `text-sm transition ${isActive ? "text-violet-500" : "text-gray-700 hover:text-violet-500"}`;
 
 export default function Header() {
@@ -184,15 +256,12 @@ export default function Header() {
             <BagIcon />
             <Count n={totals.count} />
           </Link>
-          <Link to={user ? "/account" : "/login"} className={iconLink} aria-label={user ? "Your account" : "Sign in"} title={user ? user.name : "Sign in"}>
-            {user ? (
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-brand text-xs font-semibold text-white">
-                {user.name.charAt(0).toUpperCase()}
-              </span>
-            ) : (
+          {!user && (
+            <Link to="/login" className={`${iconLink} sm:hidden`} aria-label="Sign in">
               <UserIcon />
-            )}
-          </Link>
+            </Link>
+          )}
+          <UserMenu />
         </div>
       </Container>
 

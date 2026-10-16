@@ -6,27 +6,7 @@ import { Container, PageBanner } from "../ui/States";
 import Field from "../ui/Field";
 import Img from "../ui/Img";
 import { OrderSummary } from "./Cart";
-
-const EMPTY = { name: "", phone: "", pincode: "", line1: "", city: "", state: "" };
-
-function loadAddress(email) {
-  try {
-    return JSON.parse(localStorage.getItem(`fs.address.${email}`)) || null;
-  } catch {
-    return null;
-  }
-}
-
-function validate(a) {
-  const e = {};
-  if (a.name.trim().length < 2) e.name = "Enter the name of the person receiving the order";
-  if (!/^[6-9]\d{9}$/.test(a.phone)) e.phone = "Enter a 10-digit mobile number";
-  if (!/^[1-9]\d{5}$/.test(a.pincode)) e.pincode = "Enter a 6-digit pincode";
-  if (a.line1.trim().length < 6) e.line1 = "Add house number and street";
-  if (!a.city.trim()) e.city = "Enter your city";
-  if (!a.state.trim()) e.state = "Enter your state";
-  return e;
-}
+import { EMPTY_ADDRESS, loadAddress, saveAddress, validateAddress } from "../lib/address";
 
 const PAYMENTS = [
   { id: "cod", label: "Cash on delivery", note: "Pay when your order arrives" },
@@ -37,7 +17,7 @@ const PAYMENTS = [
 export default function Checkout() {
   const { cart, user, placeOrder } = useStore();
   const navigate = useNavigate();
-  const [address, setAddress] = useState(() => ({ ...EMPTY, name: user?.name || "", ...loadAddress(user?.email) }));
+  const [address, setAddress] = useState(() => ({ ...EMPTY_ADDRESS, name: user?.name || "", ...loadAddress(user?.email) }));
   const [errors, setErrors] = useState({});
   const [payment, setPayment] = useState("cod");
   const [submitting, setSubmitting] = useState(false);
@@ -50,22 +30,20 @@ export default function Checkout() {
     if (name === "pincode") value = value.replace(/\D/g, "").slice(0, 6);
     const next = { ...address, [name]: value };
     setAddress(next);
-    if (errors[name]) setErrors(validate(next));
+    if (errors[name]) setErrors(validateAddress(next));
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (submitting) return;
-    const found = validate(address);
+    const found = validateAddress(address);
     setErrors(found);
     if (Object.keys(found).length) {
       document.querySelector(`[name="${Object.keys(found)[0]}"]`)?.focus();
       return;
     }
     setSubmitting(true);
-    try {
-      localStorage.setItem(`fs.address.${user.email}`, JSON.stringify(address));
-    } catch {}
+    saveAddress(user.email, address);
     setTimeout(() => {
       const order = placeOrder({ address, payment });
       navigate(`/order/${order.id}`, { replace: true, state: { justPlaced: true } });

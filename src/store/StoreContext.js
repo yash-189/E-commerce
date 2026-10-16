@@ -128,6 +128,26 @@ export function StoreProvider({ children }) {
     [users, setUser],
   );
 
+  const updateProfile = useCallback(
+    ({ name }) => {
+      const clean = name.trim();
+      setUser((u) => (u ? { ...u, name: clean } : u));
+      setUsers((list) => list.map((a) => (a.email === user?.email ? { ...a, name: clean } : a)));
+    },
+    [user, setUser, setUsers],
+  );
+
+  const changePassword = useCallback(
+    ({ current, next }) => {
+      if (user?.email === DEMO_ACCOUNT.email) throw new Error("The demo account's password can't be changed");
+      const account = users.find((a) => a.email === user?.email);
+      if (!account || account.password !== current) throw new Error("Current password is incorrect");
+      if (current === next) throw new Error("New password must be different");
+      setUsers((list) => list.map((a) => (a.email === account.email ? { ...a, password: next } : a)));
+    },
+    [user, users, setUsers],
+  );
+
   const logout = useCallback(() => {
     setUser(null);
     notify("Signed out");
@@ -162,7 +182,7 @@ export function StoreProvider({ children }) {
     cart, wishlist, user, toast, totals,
     orders: orders.filter((o) => o.email === user?.email),
     addToCart, setQty, removeFromCart, toggleWishlist, moveToCart,
-    register, login, logout, placeOrder, notify,
+    register, login, logout, placeOrder, notify, updateProfile, changePassword,
     inWishlist: (id) => wishlist.some((i) => i.id === id),
     inCart: (id) => cart.some((i) => i.id === id),
   };
