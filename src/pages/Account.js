@@ -43,7 +43,7 @@ function Tracker({ order }) {
             {i > 0 && (
               <span className={`absolute right-1/2 top-3.5 h-0.5 w-full -translate-y-1/2 ${i <= step ? "bg-brand" : "bg-gray-200"}`} aria-hidden="true" />
             )}
-            <span className={`relative grid h-7 w-7 place-items-center rounded-full text-xs ${done ? "bg-brand text-white" : "bg-gray-100 text-gray-400"}`}>
+            <span className={`relative z-10 grid h-7 w-7 place-items-center rounded-full text-xs ring-4 ring-white ${done ? "bg-brand text-white" : "bg-gray-100 text-gray-400"}`}>
               {done ? <CheckIcon width={14} height={14} /> : i + 1}
             </span>
             <span className={`mt-2 text-[11px] sm:text-xs ${i === step ? "font-medium text-gray-900" : "text-gray-500"}`}>{label}</span>
