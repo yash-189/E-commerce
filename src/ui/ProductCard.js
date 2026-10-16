@@ -19,7 +19,7 @@ export default function ProductCard({ product, index = 0 }) {
   return (
     <article
       className="rise group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(128,147,241,0.45)]"
-      style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
+      style={{ animationDelay: `${Math.min(index, 8) * 30}ms` }}
     >
       <div className="relative overflow-hidden rounded-2xl bg-[#f7f4fd]">
         <Link to={url} tabIndex={-1} aria-hidden="true">

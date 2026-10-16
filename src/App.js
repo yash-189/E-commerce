@@ -37,7 +37,7 @@ export default function App() {
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
       {!isAuth && <Header />}
-      <main key={isAuth ? "auth" : pathname} className={`page-in flex-1 ${isAuth ? "" : "min-h-[100svh]"}`}>
+      <main className={`flex-1 ${isAuth ? "" : "min-h-[100svh]"}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
