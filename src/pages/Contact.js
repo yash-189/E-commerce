@@ -3,6 +3,8 @@ import { useStore } from "../store/StoreContext";
 import { Container, PageBanner } from "../ui/States";
 import Field from "../ui/Field";
 import illustration from "../assets/vector.png";
+import Spinner from "../ui/Spinner";
+import { useAction } from "../lib/useAction";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const EMPTY = { name: "", email: "", message: "" };
@@ -26,11 +28,15 @@ export default function Contact() {
     if (errors[e.target.name]) setErrors(validate(next));
   };
 
-  const onSubmit = (e) => {
+  const [sending, run] = useAction();
+
+  const onSubmit = async (e) => {
     e.preventDefault();
+    if (sending) return;
     const found = validate(values);
     setErrors(found);
     if (Object.keys(found).length) return;
+    await run(() => {}, 700, 1200);
     notify("Thanks, your message has been sent");
     setValues({ ...EMPTY, name: values.name, email: values.email });
   };
@@ -70,8 +76,9 @@ export default function Contact() {
                 <span className="text-gray-400">{values.message.length}/1000</span>
               </div>
             </div>
-            <button type="submit" className="h-12 w-full rounded-xl bg-brand font-medium text-white shadow-lg shadow-violet-100 hover:opacity-90 sm:w-auto sm:px-10">
-              Send message
+            <button type="submit" disabled={sending} className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-brand font-medium text-white shadow-lg shadow-violet-100 transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-90 sm:w-48">
+              {sending && <Spinner />}
+              {sending ? "Sending" : "Send message"}
             </button>
           </form>
         </div>

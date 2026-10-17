@@ -3,6 +3,8 @@ import { useStore } from "../store/StoreContext";
 import { categoryLabel, price } from "../lib/format";
 import { BagIcon, CheckIcon, HeartIcon, StarIcon } from "./Icons";
 import Img from "./Img";
+import Spinner from "./Spinner";
+import { useAction } from "../lib/useAction";
 
 export default function ProductCard({ product, index = 0 }) {
   const { addToCart, toggleWishlist, inWishlist, inCart } = useStore();
@@ -11,6 +13,7 @@ export default function ProductCard({ product, index = 0 }) {
   const needsSize = product.category.includes("clothing");
   const popular = product.rating?.count >= 300;
   const url = `/product/${product.id}`;
+  const [adding, runAdd] = useAction();
 
   const cartBtn = `inline-flex h-9 w-9 shrink-0 items-center justify-center gap-1.5 rounded-full text-xs font-medium transition sm:w-[6.5rem] ${
     added ? "bg-brand text-white" : "bg-violet-50 text-violet-600 hover:bg-brand hover:text-white active:scale-95"
@@ -73,12 +76,14 @@ export default function ProductCard({ product, index = 0 }) {
           ) : (
             <button
               type="button"
-              onClick={() => addToCart(product)}
+              onClick={() => !adding && runAdd(() => addToCart(product), 300, 650)}
+              disabled={adding}
+              aria-busy={adding}
               aria-label={added ? "Add one more to cart" : "Add to cart"}
               className={cartBtn}
             >
-              {added ? <CheckIcon width={15} height={15} className="pop" /> : <BagIcon width={15} height={15} />}
-              <span className="hidden sm:inline">{added ? "Added" : "Add"}</span>
+              {adding ? <Spinner className="h-3.5 w-3.5" /> : added ? <CheckIcon width={15} height={15} className="pop" /> : <BagIcon width={15} height={15} />}
+              <span className="hidden sm:inline">{adding ? "Adding" : added ? "Added" : "Add"}</span>
             </button>
           )}
         </div>

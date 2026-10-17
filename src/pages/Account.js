@@ -10,6 +10,8 @@ import success from "../assets/success.png";
 import Field from "../ui/Field";
 import Img from "../ui/Img";
 import NotFound from "./NotFound";
+import Spinner from "../ui/Spinner";
+import { useAction, useSimulatedLoad } from "../lib/useAction";
 import { ProductGrid } from "../ui/ProductCard";
 
 const PAYMENT_LABEL = { cod: "Cash on delivery", upi: "UPI", card: "Card" };
@@ -70,6 +72,26 @@ function Card({ title, action, children, className = "" }) {
   );
 }
 
+function OrderRowSkeleton() {
+  return (
+    <li className="flex items-center gap-4 rounded-2xl border border-gray-100 p-4" aria-hidden="true">
+      <div className="h-12 w-12 skeleton rounded-xl" />
+      <div className="flex-1 space-y-2">
+        <div className="h-3 w-28 skeleton rounded" />
+        <div className="h-2.5 w-20 skeleton rounded" />
+      </div>
+      <div className="h-6 w-20 skeleton rounded-full" />
+      <div className="hidden h-4 w-16 skeleton rounded sm:block" />
+    </li>
+  );
+}
+
+const SkeletonList = ({ n = 3 }) => (
+  <ul className="space-y-3" aria-busy="true">
+    {Array.from({ length: n }, (_, i) => <OrderRowSkeleton key={i} />)}
+  </ul>
+);
+
 function OrderRow({ order }) {
   return (
     <li>
@@ -98,7 +120,7 @@ function OrderRow({ order }) {
   );
 }
 
-function Overview({ orders, go }) {
+function Overview({ orders, go, ready }) {
   const { wishlist, totals } = useStore();
   const spent = orders.reduce((n, o) => n + o.total, 0);
   const active = orders.filter((o) => !orderProgress(o).delivered).length;
@@ -116,7 +138,11 @@ function Overview({ orders, go }) {
           const body = (
             <>
               <span className="block text-xs text-gray-500">{s.label}</span>
-              <span className="mt-1 block font-display text-2xl font-semibold text-gray-900">{s.value}</span>
+              {ready ? (
+                <span className="mt-1 block font-display text-2xl font-semibold text-gray-900">{s.value}</span>
+              ) : (
+                <span className="mt-2 block h-6 w-16 skeleton rounded" />
+              )}
             </>
           );
           const cls = "block w-full rounded-2xl bg-[#faf8fe] p-4 text-left transition hover:bg-[#f3edfd]";
@@ -132,7 +158,9 @@ function Overview({ orders, go }) {
         title="Recent orders"
         action={orders.length > 3 && <button type="button" onClick={() => go("orders")} className="text-sm font-medium text-violet-600 hover:text-violet-700">View all</button>}
       >
-        {orders.length === 0 ? (
+        {!ready ? (
+          <SkeletonList />
+        ) : orders.length === 0 ? (
           <EmptyState title="No orders yet" body="When you place an order, it will show up here." action="Start shopping" />
         ) : (
           <ul className="space-y-3">{orders.slice(0, 3).map((o) => <OrderRow key={o.id} order={o} />)}</ul>
@@ -152,7 +180,7 @@ function Overview({ orders, go }) {
   );
 }
 
-function Orders({ orders }) {
+function Orders({ orders, ready }) {
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState("All");
   const list = useMemo(() => {
@@ -163,6 +191,15 @@ function Orders({ orders }) {
       return o.id.toLowerCase().includes(term) || o.items.some((i) => i.title.toLowerCase().includes(term));
     });
   }, [orders, q, filter]);
+
+  if (!ready) {
+    return (
+      <Card title="Orders">
+        <div className="mb-5 h-11 skeleton rounded-full" />
+        <SkeletonList n={4} />
+      </Card>
+    );
+  }
 
   if (orders.length === 0) {
     return (
@@ -231,6 +268,7 @@ function Addresses() {
   const [editing, setEditing] = useState(false);
   const [values, setValues] = useState(saved || { ...EMPTY_ADDRESS, name: user.name });
   const [errors, setErrors] = useState({});
+  const [saving, run] = useAction();
 
   const onChange = (e) => {
     const { name } = e.target;
@@ -241,14 +279,16 @@ function Addresses() {
     if (errors[name]) setErrors(validateAddress(next));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    if (saving) return;
     const found = validateAddress(values);
     setErrors(found);
     if (Object.keys(found).length) {
       document.getElementById(Object.keys(found)[0])?.focus();
       return;
     }
+    await run(() => {}, 500, 900);
     if (!saveAddress(user.email, values)) {
       notify("Couldn't save, storage is full or blocked");
       return;
@@ -279,7 +319,10 @@ function Addresses() {
           <Field label="City" name="city" placeholder="New Delhi" autoComplete="address-level2" value={values.city} onChange={onChange} error={errors.city} />
           <Field className="sm:col-span-2" label="State" name="state" placeholder="Delhi" autoComplete="address-level1" value={values.state} onChange={onChange} error={errors.state} />
           <div className="flex gap-3 sm:col-span-2">
-            <button type="submit" className="h-11 rounded-full bg-brand px-6 text-sm font-medium text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5">Save address</button>
+            <button type="submit" disabled={saving} className="inline-flex h-11 w-36 items-center justify-center gap-2 rounded-full bg-brand text-sm font-medium text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 disabled:cursor-wait">
+              {saving && <Spinner />}
+              {saving ? "Saving" : "Save address"}
+            </button>
             {saved && (
               <button type="button" onClick={() => { setValues(saved); setErrors({}); setEditing(false); }} className="h-11 rounded-full px-5 text-sm text-gray-600 hover:text-gray-900">
                 Cancel
@@ -321,20 +364,24 @@ function Settings() {
   const [pw, setPw] = useState({ current: "", next: "", confirm: "" });
   const [pwErrors, setPwErrors] = useState({});
   const isDemo = user.email === DEMO_ACCOUNT.email;
+  const [savingName, runName] = useAction();
+  const [savingPw, runPw] = useAction();
 
-  const saveName = (e) => {
+  const saveName = async (e) => {
     e.preventDefault();
+    if (savingName) return;
     if (name.trim().length < 2) {
       setNameError("Name is too short");
       return;
     }
     setNameError("");
-    updateProfile({ name });
+    await runName(() => updateProfile({ name }), 500, 900);
     notify("Profile updated");
   };
 
-  const savePassword = (e) => {
+  const savePassword = async (e) => {
     e.preventDefault();
+    if (savingPw) return;
     const found = {};
     if (!pw.current) found.current = "Enter your current password";
     if (pw.next.length < 8) found.next = "Use at least 8 characters";
@@ -342,7 +389,7 @@ function Settings() {
     setPwErrors(found);
     if (Object.keys(found).length) return;
     try {
-      changePassword({ current: pw.current, next: pw.next });
+      await runPw(() => changePassword({ current: pw.current, next: pw.next }), 600, 1000);
       setPw({ current: "", next: "", confirm: "" });
       notify("Password changed");
     } catch (err) {
@@ -364,10 +411,11 @@ function Settings() {
           <div className="sm:col-span-2">
             <button
               type="submit"
-              disabled={name.trim() === user.name}
-              className="h-11 rounded-full bg-brand px-6 text-sm font-medium text-white transition hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={savingName || name.trim() === user.name}
+              className="inline-flex h-11 w-36 items-center justify-center gap-2 rounded-full bg-brand text-sm font-medium text-white transition hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Save changes
+              {savingName && <Spinner />}
+              {savingName ? "Saving" : "Save changes"}
             </button>
           </div>
         </form>
@@ -383,8 +431,9 @@ function Settings() {
             <Field label="New password" name="next" type="password" autoComplete="new-password" value={pw.next} onChange={onPw} error={pwErrors.next} />
             <Field label="Confirm new password" name="confirm" type="password" autoComplete="new-password" value={pw.confirm} onChange={onPw} error={pwErrors.confirm} />
             <div className="sm:col-span-2">
-              <button type="submit" className="h-11 rounded-full border border-violet-300 px-6 text-sm font-medium text-violet-600 transition hover:bg-violet-50">
-                Update password
+              <button type="submit" disabled={savingPw} className="inline-flex h-11 w-44 items-center justify-center gap-2 rounded-full border border-violet-300 text-sm font-medium text-violet-600 transition hover:bg-violet-50 disabled:cursor-wait">
+                {savingPw && <Spinner />}
+                {savingPw ? "Updating" : "Update password"}
               </button>
             </div>
           </form>
@@ -398,6 +447,7 @@ export default function Account() {
   const { user, orders, wishlist, logout } = useStore();
   const [params, setParams] = useSearchParams();
   const counts = { orders: orders.length, wishlist: wishlist.length };
+  const ready = useSimulatedLoad(500, 900);
   const [confirmOut, setConfirmOut] = useState(false);
   const tab = TABS.some((t) => t.id === params.get("tab")) ? params.get("tab") : "overview";
   const go = (id) => setParams(id === "overview" ? {} : { tab: id });
@@ -450,8 +500,8 @@ export default function Account() {
         </nav>
 
         <div className="min-w-0">
-          {tab === "overview" && <Overview orders={orders} go={go} />}
-          {tab === "orders" && <Orders orders={orders} />}
+          {tab === "overview" && <Overview orders={orders} go={go} ready={ready} />}
+          {tab === "orders" && <Orders orders={orders} ready={ready} />}
           {tab === "wishlist" && <Wishlist />}
           {tab === "addresses" && <Addresses />}
           {tab === "settings" && <Settings />}
@@ -466,6 +516,19 @@ export function OrderDetail() {
   const { orders, addToCart, notify } = useStore();
   const { state } = useLocation();
   const order = orders.find((o) => o.id === id);
+  const ready = useSimulatedLoad(400, 800);
+
+  if (!ready && !state?.justPlaced) {
+    return (
+      <Container className="max-w-4xl py-8 sm:py-12" aria-busy="true">
+        <div className="h-3 w-20 skeleton rounded" />
+        <div className="mt-4 h-8 w-64 skeleton rounded" />
+        <div className="mt-3 h-3 w-48 skeleton rounded" />
+        <div className="mt-6 h-24 skeleton rounded-2xl" />
+        <div className="mt-6 h-48 skeleton rounded-2xl" />
+      </Container>
+    );
+  }
 
   if (!order) return <NotFound what="order" />;
 

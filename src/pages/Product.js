@@ -10,6 +10,8 @@ import { HeartIcon } from "../ui/Icons";
 import Stars from "../ui/Stars";
 import QtyStepper from "../ui/QtyStepper";
 import NotFound from "./NotFound";
+import Spinner from "../ui/Spinner";
+import { useAction } from "../lib/useAction";
 import { DeliveryCheck, DetailTabs, Offers, ShareButton, ZoomImage, useRecentlyViewed } from "../ui/ProductExtras";
 
 const CLOTHING_SIZES = ["S", "M", "L", "XL"];
@@ -22,6 +24,8 @@ export default function Product() {
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState(null);
   const [sizeError, setSizeError] = useState(false);
+  const [pending, setPending] = useState(null);
+  const [, run] = useAction();
 
   const { data: product, loading, error, retry } = useFetch(
     (o) => (validId ? getProduct(id, o) : Promise.resolve(null)),
@@ -75,14 +79,21 @@ export default function Product() {
   const mrp = Math.round(toInr(product.price) * 1.25);
   const related = (all || []).filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
 
-  const add = (buyNow) => {
+  const add = async (buyNow) => {
+    if (pending) return;
     if (needsSize && !size) {
       setSizeError(true);
       return;
     }
-    addToCart(product, qty, needsSize ? size : null);
-    if (buyNow) navigate("/cart");
+    setPending(buyNow ? "buy" : "cart");
+    try {
+      await run(() => addToCart(product, qty, needsSize ? size : null), 400, 800);
+      if (buyNow) navigate("/cart");
+    } finally {
+      setPending(null);
+    }
   };
+
 
   return (
     <Container className="pb-28 pt-8 sm:py-10">
@@ -142,10 +153,12 @@ export default function Product() {
           </div>
 
           <div className="fixed inset-x-0 bottom-0 z-30 flex gap-3 border-t border-gray-100 bg-white/95 p-3 backdrop-blur sm:static sm:mt-7 sm:border-0 sm:bg-transparent sm:p-0">
-            <button type="button" onClick={() => add(false)} className="h-12 flex-1 rounded-full bg-brand font-medium text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 active:scale-[0.98]">
-              Add to cart
+            <button type="button" onClick={() => add(false)} disabled={!!pending} aria-busy={pending === "cart"} className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-brand font-medium text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 active:scale-[0.98] disabled:cursor-wait disabled:opacity-90">
+              {pending === "cart" && <Spinner />}
+              {pending === "cart" ? "Adding" : "Add to cart"}
             </button>
-            <button type="button" onClick={() => add(true)} className="h-12 flex-1 rounded-full border border-violet-300 bg-white font-medium text-violet-600 transition hover:bg-violet-50 active:scale-[0.98]">
+            <button type="button" onClick={() => add(true)} disabled={!!pending} aria-busy={pending === "buy"} className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-violet-300 bg-white font-medium text-violet-600 transition hover:bg-violet-50 active:scale-[0.98] disabled:cursor-wait">
+              {pending === "buy" && <Spinner />}
               Buy Now
             </button>
             <button

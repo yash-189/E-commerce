@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { CheckIcon, PinIcon, ShareIcon, StarIcon, TagIcon } from "./Icons";
 import Img from "./Img";
+import Spinner from "./Spinner";
+import { useAction } from "../lib/useAction";
 import { useStore } from "../store/StoreContext";
 
 const RECENT_KEY = "fs.recent";
@@ -140,13 +142,17 @@ export function DeliveryCheck({ free }) {
     }
   });
   const [result, setResult] = useState(null);
+  const [checking, run] = useAction();
 
-  const check = (e) => {
+  const check = async (e) => {
     e.preventDefault();
+    if (checking) return;
     if (!/^[1-9]\d{5}$/.test(pin)) {
       setResult({ error: "Enter a valid 6-digit pincode" });
       return;
     }
+    setResult(null);
+    await run(() => {}, 500, 1000);
     try {
       localStorage.setItem("fs.pincode", pin);
     } catch {}
@@ -175,11 +181,12 @@ export function DeliveryCheck({ free }) {
           aria-describedby="pincode-result"
           className="h-11 min-w-0 flex-1 rounded-full border border-gray-200 bg-white px-4 text-sm outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100"
         />
-        <button type="submit" className="h-11 rounded-full px-5 text-sm font-medium text-violet-600 ring-1 ring-violet-300 transition hover:bg-violet-50">
-          Check
+        <button type="submit" disabled={checking} className="inline-flex h-11 w-24 items-center justify-center gap-2 rounded-full text-sm font-medium text-violet-600 ring-1 ring-violet-300 transition hover:bg-violet-50 disabled:cursor-wait">
+          {checking ? <Spinner /> : "Check"}
         </button>
       </form>
       <div id="pincode-result" role="status" className="mt-2 min-h-[1.25rem] text-sm">
+        {checking && <span className="text-gray-500">Checking delivery options…</span>}
         {result?.error && <span className="text-red-600">{result.error}</span>}
         {result?.date && (
           <span className="rise inline-flex items-center gap-1.5 text-gray-700">

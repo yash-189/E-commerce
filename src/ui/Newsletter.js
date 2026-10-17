@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Reveal from "./Reveal";
+import Spinner from "./Spinner";
+import { useAction } from "../lib/useAction";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -7,10 +9,18 @@ export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
 
-  const submit = (e) => {
+  const [busy, run] = useAction();
+
+  const submit = async (e) => {
     e.preventDefault();
-    setStatus(EMAIL.test(email.trim()) ? "done" : "error");
-    if (EMAIL.test(email.trim())) setEmail("");
+    if (busy) return;
+    if (!EMAIL.test(email.trim())) {
+      setStatus("error");
+      return;
+    }
+    await run(() => {}, 600, 1000);
+    setStatus("done");
+    setEmail("");
   };
 
   return (
@@ -37,8 +47,9 @@ export default function Newsletter() {
             aria-describedby="newsletter-status"
             className="h-12 flex-1 rounded-xl border-0 bg-white px-4 text-sm text-gray-900 outline-none ring-2 ring-transparent focus:ring-white/60"
           />
-          <button type="submit" className="h-12 rounded-xl bg-white px-6 text-sm font-medium text-violet-600 transition hover:bg-violet-50">
-            Subscribe
+          <button type="submit" disabled={busy} className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-white text-sm font-medium text-violet-600 transition hover:bg-violet-50 disabled:cursor-wait sm:w-32">
+            {busy && <Spinner />}
+            {busy ? "Joining" : "Subscribe"}
           </button>
         </form>
         <p id="newsletter-status" role="status" className="relative mt-3 min-h-[1.25rem] text-sm">
