@@ -54,7 +54,7 @@ function Categories({ products, loading }) {
               {loading || !sample ? (
                 <div className="aspect-square skeleton rounded-xl" />
               ) : (
-                <Img src={sample.image} alt="" className="aspect-square !bg-transparent p-4 mix-blend-multiply" imgClassName="transition duration-500 group-hover:scale-105" />
+                <Img src={sample.image} alt="" className="aspect-square !bg-transparent p-4 mix-blend-multiply" imgClassName="group-hover:scale-[1.06]" />
               )}
               <div className="mt-3 flex items-center justify-between">
                 <span>
@@ -76,7 +76,7 @@ function Categories({ products, loading }) {
 function Banner({ to, src, alt, className = "" }) {
   return (
     <Link to={to} className={`group relative block overflow-hidden rounded-2xl bg-gray-100 ${className}`}>
-      <img src={src} alt={alt} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
+      <img src={src} alt={alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]" />
     </Link>
   );
 }

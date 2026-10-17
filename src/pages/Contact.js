@@ -47,8 +47,8 @@ export default function Contact() {
 
           <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Name" name="name" autoComplete="name" value={values.name} onChange={onChange} error={errors.name} />
-              <Field label="Email" name="email" type="email" autoComplete="email" value={values.email} onChange={onChange} error={errors.email} />
+              <Field label="Name" name="name" placeholder="Your name" autoComplete="name" value={values.name} onChange={onChange} error={errors.name} />
+              <Field label="Email" name="email" placeholder="you@example.com" type="email" autoComplete="email" value={values.email} onChange={onChange} error={errors.email} />
             </div>
             <div>
               <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-gray-700">Message</label>
@@ -56,6 +56,7 @@ export default function Contact() {
                 id="message"
                 name="message"
                 rows={5}
+                placeholder="How can we help?"
                 maxLength={1000}
                 value={values.message}
                 onChange={onChange}

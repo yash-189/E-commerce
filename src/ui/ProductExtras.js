@@ -48,7 +48,7 @@ export function ZoomImage({ src, alt }) {
         src={src}
         alt={alt}
         className="h-full w-full !bg-transparent p-10 sm:p-16"
-        imgClassName="mix-blend-multiply transition-transform duration-200 ease-out"
+        imgClassName="mix-blend-multiply !duration-200"
       />
     </div>
   );

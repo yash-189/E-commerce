@@ -169,7 +169,7 @@ function UserMenu() {
           <div className="py-1">
             <Link to="/account" className={item}>My account</Link>
             <Link to="/account?tab=orders" className={item}>Orders</Link>
-            <Link to="/wishlist" className={item}>Wishlist</Link>
+            <Link to="/account?tab=wishlist" className={item}>Wishlist</Link>
             <Link to="/account?tab=addresses" className={item}>Address</Link>
             <Link to="/account?tab=settings" className={item}>Settings</Link>
           </div>
@@ -248,7 +248,7 @@ export default function Header() {
           >
             {searchOpen ? <CloseIcon /> : <SearchIcon />}
           </button>
-          <Link to="/wishlist" className={`${iconLink} hidden sm:grid`} aria-label={`Wishlist, ${wishlist.length} items`}>
+          <Link to={user ? "/account?tab=wishlist" : "/wishlist"} className={`${iconLink} hidden sm:grid`} aria-label={`Wishlist, ${wishlist.length} items`}>
             <HeartIcon />
             <Count n={wishlist.length} />
           </Link>

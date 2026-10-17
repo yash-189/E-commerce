@@ -10,12 +10,14 @@ import success from "../assets/success.png";
 import Field from "../ui/Field";
 import Img from "../ui/Img";
 import NotFound from "./NotFound";
+import { ProductGrid } from "../ui/ProductCard";
 
 const PAYMENT_LABEL = { cod: "Cash on delivery", upi: "UPI", card: "Card" };
 
 const TABS = [
   { id: "overview", label: "Overview", Icon: UserIcon },
   { id: "orders", label: "Orders", Icon: BagIcon },
+  { id: "wishlist", label: "Wishlist", Icon: HeartIcon },
   { id: "addresses", label: "Address", Icon: PinIcon },
   { id: "settings", label: "Settings", Icon: CheckIcon },
 ];
@@ -103,7 +105,7 @@ function Overview({ orders, go }) {
   const stats = [
     { label: "Orders", value: orders.length, onClick: () => go("orders") },
     { label: "In transit", value: active, onClick: () => go("orders") },
-    { label: "Wishlist", value: wishlist.length, to: "/wishlist" },
+    { label: "Wishlist", value: wishlist.length, onClick: () => go("wishlist") },
     { label: "Total spent", value: rupees(spent) },
   ];
 
@@ -210,6 +212,19 @@ function Orders({ orders }) {
   );
 }
 
+function Wishlist() {
+  const { wishlist } = useStore();
+  return (
+    <Card title={`Wishlist (${wishlist.length})`}>
+      {wishlist.length === 0 ? (
+        <EmptyState title="Your wishlist is empty" body="Tap the heart on any product to save it here." action="Browse products" />
+      ) : (
+        <ProductGrid products={wishlist} />
+      )}
+    </Card>
+  );
+}
+
 function Addresses() {
   const { user, notify } = useStore();
   const [saved, setSaved] = useState(() => loadAddress(user.email));
@@ -257,12 +272,12 @@ function Addresses() {
       <Card title={saved ? "Edit address" : "Add a delivery address"}>
         {!saved && !editing && <p className="-mt-2 mb-5 text-sm text-gray-500">Save it once and checkout fills it in for you.</p>}
         <form onSubmit={onSubmit} noValidate className="grid gap-4 sm:grid-cols-2">
-          <Field label="Full name" name="name" autoComplete="name" value={values.name} onChange={onChange} error={errors.name} />
-          <Field label="Mobile number" name="phone" type="tel" inputMode="numeric" autoComplete="tel-national" value={values.phone} onChange={onChange} error={errors.phone} />
-          <Field className="sm:col-span-2" label="House number and street" name="line1" autoComplete="address-line1" value={values.line1} onChange={onChange} error={errors.line1} />
-          <Field label="Pincode" name="pincode" inputMode="numeric" autoComplete="postal-code" value={values.pincode} onChange={onChange} error={errors.pincode} />
-          <Field label="City" name="city" autoComplete="address-level2" value={values.city} onChange={onChange} error={errors.city} />
-          <Field className="sm:col-span-2" label="State" name="state" autoComplete="address-level1" value={values.state} onChange={onChange} error={errors.state} />
+          <Field label="Full name" name="name" placeholder="Aarav Sharma" autoComplete="name" value={values.name} onChange={onChange} error={errors.name} />
+          <Field label="Mobile number" name="phone" placeholder="98765 43210" type="tel" inputMode="numeric" autoComplete="tel-national" value={values.phone} onChange={onChange} error={errors.phone} />
+          <Field className="sm:col-span-2" label="House number and street" name="line1" placeholder="Flat 12, MG Road" autoComplete="address-line1" value={values.line1} onChange={onChange} error={errors.line1} />
+          <Field label="Pincode" name="pincode" placeholder="110001" inputMode="numeric" autoComplete="postal-code" value={values.pincode} onChange={onChange} error={errors.pincode} />
+          <Field label="City" name="city" placeholder="New Delhi" autoComplete="address-level2" value={values.city} onChange={onChange} error={errors.city} />
+          <Field className="sm:col-span-2" label="State" name="state" placeholder="Delhi" autoComplete="address-level1" value={values.state} onChange={onChange} error={errors.state} />
           <div className="flex gap-3 sm:col-span-2">
             <button type="submit" className="h-11 rounded-full bg-brand px-6 text-sm font-medium text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5">Save address</button>
             {saved && (
@@ -380,8 +395,9 @@ function Settings() {
 }
 
 export default function Account() {
-  const { user, orders, logout } = useStore();
+  const { user, orders, wishlist, logout } = useStore();
   const [params, setParams] = useSearchParams();
+  const counts = { orders: orders.length, wishlist: wishlist.length };
   const [confirmOut, setConfirmOut] = useState(false);
   const tab = TABS.some((t) => t.id === params.get("tab")) ? params.get("tab") : "overview";
   const go = (id) => setParams(id === "overview" ? {} : { tab: id });
@@ -426,19 +442,17 @@ export default function Account() {
             >
               <Icon width={17} height={17} />
               {label}
-              {id === "orders" && orders.length > 0 && (
-                <span className="ml-auto rounded-full bg-white px-2 text-xs text-gray-500">{orders.length}</span>
+              {counts[id] > 0 && (
+                <span className="ml-auto rounded-full bg-white px-2 text-xs text-gray-500">{counts[id]}</span>
               )}
             </button>
           ))}
-          <Link to="/wishlist" className="flex shrink-0 items-center gap-3 rounded-full px-4 py-2.5 text-sm text-gray-600 transition hover:bg-gray-50 hover:text-gray-900 lg:rounded-xl">
-            <HeartIcon width={17} height={17} /> Wishlist
-          </Link>
         </nav>
 
         <div className="min-w-0">
           {tab === "overview" && <Overview orders={orders} go={go} />}
           {tab === "orders" && <Orders orders={orders} />}
+          {tab === "wishlist" && <Wishlist />}
           {tab === "addresses" && <Addresses />}
           {tab === "settings" && <Settings />}
         </div>

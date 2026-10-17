@@ -59,12 +59,12 @@ export default function Checkout() {
           <section className="rounded-xl border border-gray-200 bg-white p-5 sm:p-6">
             <h2 className="font-semibold text-gray-900">1. Delivery address</h2>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <Field label="Full name" name="name" autoComplete="name" value={address.name} onChange={onChange} error={errors.name} />
-              <Field label="Mobile number" name="phone" type="tel" inputMode="numeric" autoComplete="tel-national" value={address.phone} onChange={onChange} error={errors.phone} />
-              <Field className="sm:col-span-2" label="House number and street" name="line1" autoComplete="address-line1" value={address.line1} onChange={onChange} error={errors.line1} />
-              <Field label="Pincode" name="pincode" inputMode="numeric" autoComplete="postal-code" value={address.pincode} onChange={onChange} error={errors.pincode} />
-              <Field label="City" name="city" autoComplete="address-level2" value={address.city} onChange={onChange} error={errors.city} />
-              <Field className="sm:col-span-2" label="State" name="state" autoComplete="address-level1" value={address.state} onChange={onChange} error={errors.state} />
+              <Field label="Full name" name="name" placeholder="Aarav Sharma" autoComplete="name" value={address.name} onChange={onChange} error={errors.name} />
+              <Field label="Mobile number" name="phone" placeholder="98765 43210" type="tel" inputMode="numeric" autoComplete="tel-national" value={address.phone} onChange={onChange} error={errors.phone} />
+              <Field className="sm:col-span-2" label="House number and street" name="line1" placeholder="Flat 12, MG Road" autoComplete="address-line1" value={address.line1} onChange={onChange} error={errors.line1} />
+              <Field label="Pincode" name="pincode" placeholder="110001" inputMode="numeric" autoComplete="postal-code" value={address.pincode} onChange={onChange} error={errors.pincode} />
+              <Field label="City" name="city" placeholder="New Delhi" autoComplete="address-level2" value={address.city} onChange={onChange} error={errors.city} />
+              <Field className="sm:col-span-2" label="State" name="state" placeholder="Delhi" autoComplete="address-level1" value={address.state} onChange={onChange} error={errors.state} />
             </div>
           </section>
 

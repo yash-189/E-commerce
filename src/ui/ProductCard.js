@@ -27,7 +27,7 @@ export default function ProductCard({ product, index = 0 }) {
             src={product.image}
             alt=""
             className="aspect-[4/5] !bg-transparent p-6 mix-blend-multiply"
-            imgClassName="transition duration-500 group-hover:scale-105"
+            imgClassName="group-hover:scale-[1.06]"
           />
         </Link>
         {popular && (

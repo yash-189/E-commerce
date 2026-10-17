@@ -1,6 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { toInr, FREE_SHIPPING_FROM, SHIPPING_FEE } from "../lib/format";
+import { DEMO_ADDRESS, demoOrders } from "../lib/demoOrders";
+import { loadAddress, saveAddress } from "../lib/address";
 
 const StoreContext = createContext(null);
 export const MAX_QTY = 10;
@@ -123,9 +125,13 @@ export function StoreProvider({ children }) {
       if (!account || account.password !== password) {
         throw new Error("Email or password is incorrect");
       }
+      if (key === DEMO_ACCOUNT.email) {
+        setOrders((list) => (list.some((o) => o.email === key) ? list : [...list, ...demoOrders(key)]));
+        if (!loadAddress(key)) saveAddress(key, DEMO_ADDRESS);
+      }
       setUser({ name: account.name, email: key });
     },
-    [users, setUser],
+    [users, setUser, setOrders],
   );
 
   const updateProfile = useCallback(

@@ -15,7 +15,7 @@ export default function Img({ src, alt, className = "", imgClassName = "" }) {
           loading="lazy"
           onLoad={() => setState("ready")}
           onError={() => setState("error")}
-          className={`h-full w-full object-contain transition-opacity duration-300 ${
+          className={`h-full w-full object-contain transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform ${
             state === "ready" ? "opacity-100" : "opacity-0"
           } ${imgClassName}`}
         />
